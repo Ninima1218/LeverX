@@ -1,0 +1,139 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #eef1f3;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(1, 1, 201);
+    color: white;
+    padding: 16px 40px;
+    width: 100vw;
+    height: 60px;
+}
+
+.header_left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.header_left h3 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.header_left h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #fff;
+}
+
+.header_center {
+    flex: 1;
+    text-align: center;
+}
+
+.address-book-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.header_right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.support-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgb(25, 25, 165);
+    color: #f1f4fa;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 22px;
+    font-size: 10px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.support-btn:hover,
+.signout-btn:hover {
+    background: #5c85cc;
+}
+
+.support-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+}
+
+.support-icon img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: invert(1);
+}
+
+.signout-btn {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(25, 25, 165);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+}
+
+.signout-btn:hover,
+.user-info:hover {
+    background: #5c85cc;
+} 
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgb(25, 25, 165);
+    border-radius: 22px;
+    padding: 0 10px 0 0;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 10px;
+    font-weight: 500;
+    color: #fff;
+    margin-left: 2px;
+}
+
+.signout-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+    filter: invert(1);
+}
