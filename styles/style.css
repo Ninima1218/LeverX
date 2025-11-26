@@ -137,3 +137,237 @@ body {
     display: block;
     filter: invert(1);
 }
+
+.main-content {
+    padding: 32px 40px 0 40px;
+    background: #ebf0f3;
+    min-height: calc(100vh - 60px);
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 40px;
+}
+
+.serach-filter-section {
+    display: flex;
+    width: 40%;
+    max-width: 340px;
+    display:flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.search-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.search-tab {
+    flex: 1;
+    padding: 12px 0 10px 0;
+    font-size: 14px;
+    border: none;
+    background: transparent;
+    color: #b4bccc;
+    cursor: pointer;
+    font-weight: 500;
+    outline: none;
+    position: relative;
+    transition: color 0.2s;
+    letter-spacing: 0.1px;
+}
+
+.search-tab:last-child {
+    border-right: none;
+}
+
+.search-tab.active {
+    color: rgb(29, 29, 29);
+    font-weight: 500;
+}
+
+.search-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 4px;
+    padding: 0;
+    background: #216ce7;
+    border-radius: 2px;
+}
+/* Поле поиска */
+.search-form {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 0 1px 8px rgba(22, 50, 80, 0.04);
+    width: 90%;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#employee-search {
+    width: 100%;
+    padding: 10px 12px 10px 38px;
+    font-size: 15px;
+    border: 1px solid #dde4ed;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.search-btn {
+    width: 100%;
+    height: 40px;;
+    padding: 8px 28px;
+    background: #216ce7;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.search-btn:hover {
+    background: #184db7;
+}
+
+/* Правая секция — toolbar + карточки */
+.employee-section {
+    width: 60%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.employee-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    min-height: 38px;
+}
+
+.employee-count {
+    font-size: 15px;
+    color: #222a3b;
+    font-weight: 500;
+}
+
+.view-toogle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.view-btn {
+    background: #ebf0fa;
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+}
+
+.view-btn.active,
+.view-btn:hover {
+    background: #216ce7;
+}
+
+.view-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Контейнер карточек сотрудников */
+.emplayee-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Карточка сотрудника */
+.employee-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1px 8px rgba(22, 50, 80, 0.08);
+    padding: 24px 18px 20px 18px;
+    width: calc(33.333% - 14px);
+    /* 3 в линию, с отступами */
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.employee-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.employee-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.employee-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #222a3b;
+    margin-bottom: 2px;
+}
+
+.employee-position,
+.employee-room {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: #5d6c8e;
+    font-weight: 500;
+}
+
+.employee-position img,
+.employee-room img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
