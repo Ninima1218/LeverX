@@ -6,50 +6,57 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
-    clean: true
+    publicPath: "/",
+    clean: true,
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
+        use: "babel-loader",
         exclude: /node_modules/,
-        use: "babel-loader"
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
-        test: /\.(png|jpg|jpeg|gif|svg|webp)$/i,
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|jpe?g|gif|webp|svg)$/i,
         type: "asset/resource",
-        generator: {
-          filename: "assets/[name][ext]"
-        }
-      }
-    ]
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+        generator: { filename: "assets/images/[name][ext]" },
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)$/i,
+        type: "asset/resource",
+        generator: { filename: "assets/fonts/[name][ext]" },
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "public", "index.html"),
-      filename: "index.html"
-    })
+      template: path.resolve(__dirname, "public/index.html"),
+      filename: "index.html",
+      inject: "body",
+    }),
   ],
   devServer: {
-    static: {
-      directory: path.join(__dirname, "public")
-    },
-    port: 5173,
+    historyApiFallback: true,
+    port: 3000,
+    open: true,
+    client: { overlay: true },
     proxy: [
       {
-        context: ["/users", "/sign-in", "/sign-up"],
-        target: "http://localhost:3001"
-      }
+        context: ["/api"],
+        target: "http://localhost:3001",
+      },
     ],
-    historyApiFallback: true,
-    hot: true,
-    open: true
-  }
+  },
+  devtool: "source-map",
 };

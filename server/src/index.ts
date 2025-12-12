@@ -1,101 +1,65 @@
-import path from "path";
-import express, { Request, Response } from "express";
-import sqlite3 from "sqlite3";
+import express from "express";
+import cors from "cors";
+import Database from "better-sqlite3";
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
+const db = new Database("server/data/addressbook.db");
+
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+  )
+`).run();
+
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS employees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    position TEXT,
+    room TEXT,
+    avatar TEXT
+  )
+`).run();
+
+const count = db.prepare("SELECT COUNT(*) AS c FROM employees").get() as { c: number };
+if (count.c === 0) {
+  const insert = db.prepare(
+    "INSERT INTO employees (name, position, room, avatar) VALUES (?, ?, ?, ?)"
+  );
+  insert.run("Иван Иванов", "Frontend Developer", "302", "avatar1.webp");
+  insert.run("Анна Петрова", "UX Designer", "210", "avatar1.webp");
+}
+
+app.use(cors());
 app.use(express.json());
 
-const dbPath = path.join(__dirname, "..", "data", "users.db");
-const db = new (sqlite3.verbose()).Database(dbPath);
-
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS users (
-      _id TEXT PRIMARY KEY,
-      first_name TEXT,
-      last_name TEXT,
-      email TEXT,
-      department TEXT,
-      room TEXT,
-      phone TEXT,
-      telegram TEXT,
-      citizenship TEXT,
-      avatar TEXT
-    )
-  `);
+app.post("/api/sign-up", (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const stmt = db.prepare("INSERT INTO users (email, password) VALUES (?, ?)");
+    const result = stmt.run(email, password);
+    res.json({ success: true, id: result.lastInsertRowid, email });
+  } catch (e: any) {
+    res.status(400).json({ success: false, message: e.message });
+  }
 });
 
-type User = {
-  _id: string;
-  first_name: string;
-  last_name: string;
-  email?: string;
-  department?: string;
-  room?: string;
-  phone?: string;
-  telegram?: string;
-  citizenship?: string;
-  avatar?: string;
-};
-
-app.get("/users", (_req: Request, res: Response) => {
-  db.all("SELECT * FROM users", [], (err, rows) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.status(500).json({ error: "DB error" });
-    }
-    res.json((rows || []) as User[]);
-  });
+app.post("/api/sign-in", (req, res) => {
+  const { email, password } = req.body;
+  const user = db.prepare("SELECT * FROM users WHERE email=? AND password=?").get(email, password);
+  if (user) res.json({ success: true, user });
+  else res.status(401).json({ success: false, message: "Invalid credentials" });
 });
 
-app.get("/users/:id", (req: Request, res: Response) => {
-  const id = req.params.id;
-  db.get("SELECT * FROM users WHERE _id = ?", [id], (err, row) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.status(500).json({ error: "DB error" });
-    }
-    if (!row) return res.status(404).json({ error: "User not found" });
-    res.json(row as User);
-  });
-});
-
-app.post("/sign-in", (_req: Request, res: Response) => {
-  res.json({ ok: true });
-});
-
-app.post("/sign-up", (req: Request, res: Response) => {
-  const u = req.body as Partial<User>;
-  const id = u._id || String(Date.now());
-  const values = [
-    id,
-    u.first_name || "",
-    u.last_name || "",
-    u.email || "",
-    u.department || "",
-    u.room || "",
-    u.phone || "",
-    u.telegram || "",
-    u.citizenship || "",
-    u.avatar || ""
-  ];
-
-  db.run(
-    `INSERT INTO users (_id, first_name, last_name, email, department, room, phone, telegram, citizenship, avatar)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    values,
-    function (err) {
-      if (err) {
-        console.error("DB insert error:", err);
-        return res.status(500).json({ error: "DB insert error" });
-      }
-      res.status(201).json({ ok: true, _id: id });
-    }
-  );
+app.get("/api/employees", (_req, res) => {
+  const employees = db.prepare("SELECT * FROM employees").all();
+  res.json(employees);
 });
 
 app.listen(PORT, () => {
-  console.log(`API listening on http://localhost:${PORT}`);
+  console.log(`API running at http://localhost:${PORT}`);
 });
