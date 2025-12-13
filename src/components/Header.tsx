@@ -1,12 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../styles/_header.scss";
-import logoIcon from "../assets/icons/favicon.webp";
-import supportIcon from "../assets/icons/support.svg";
-import signoutIcon from "../assets/icons/signout.svg";
-import burgerIcon from "../assets/icons/burger-menu.svg";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { User } from "../../server/src/server-types";
 
 const Header: React.FC = () => {
+  const { auth, clearAuth } = useAuth();
+  const navigate = useNavigate();
+  const [current, setCurrent] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (!auth.userId) return;
+    fetch(`/api/users/${auth.userId}`)
+      .then(r => r.json())
+      .then(setCurrent)
+      .catch(() => setCurrent(null));
+  }, [auth.userId]);
+
+  const fullName = current ? [current.first_name, current.last_name].filter(Boolean).join(" ") : "Guest";
+  const avatar = current?.user_avatar || "/assets/avatars/profile-avatar.webp";
+
   return (
     <header className="header">
       <div className="header__left">
@@ -15,31 +27,25 @@ const Header: React.FC = () => {
           <h1>EMPLOYEE SERVICES</h1>
         </Link>
       </div>
-
       <div className="header__center">
         <div className="address-book-title">Address Book</div>
-        <Link to="/settings" className="settings-tab">Settings</Link>
+        {auth.role === "Admin" && (
+          <Link to="/settings" className="settings-tab">Settings</Link>
+        )}
       </div>
-
       <div className="header__right">
-        <button className="burger-btn" aria-label="Toggle menu">
-          <img src={burgerIcon} alt="menu icon" className="menu-icon" />
-        </button>
-
         <button className="support-btn">
           <span className="support-icon">
-            <img src={supportIcon} alt="support-icon" />
+            <img src="/assets/icons/support.svg" alt="support-icon" />
           </span>
           SUPPORT
         </button>
-
-        <div className="user-info">
-          <img src={logoIcon} alt="profile-avatar" className="user-avatar" />
-          <span className="user-name">User</span>
+        <div className="user-info" onClick={() => current && navigate(`/users/${encodeURIComponent(String(current._id))}`)}>
+          <img src={avatar} alt="profile-avatar" className="user-avatar" />
+          <span className="user-name">{fullName}</span>
         </div>
-
-        <button className="signout-btn">
-          <img src={signoutIcon} alt="signout-icon" className="signout-icon" />
+        <button className="signout-btn" onClick={() => { clearAuth(); navigate("/sign-in"); }}>
+          <img src="/assets/icons/signout.svg" alt="signout-icon" className="signout-icon" />
         </button>
       </div>
     </header>

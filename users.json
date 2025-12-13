@@ -1,0 +1,378 @@
+[
+  {
+    "_id": "1",
+    "role": "HR",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar1.webp",
+    "first_name": "John",
+    "last_name": "Smith",
+    "first_native_name": "John",
+    "last_native_name": "Smith",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1403",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": null,
+    "phone": "+995598111111",
+    "email": "john.smith@leverx.com",
+    "telegram": "@john_smith",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "2",
+    "role": "HR",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar2.webp",
+    "first_name": "Brendan",
+    "last_name": "Krueger",
+    "first_native_name": "Brendan",
+    "last_native_name": "Krueger",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1405",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": null,
+    "phone": "+995598111112",
+    "email": "brendan.krueger@leverx.com",
+    "telegram": "@brendan_krueger",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "3",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar3.webp",
+    "first_name": "Andrew",
+    "last_name": "Savage",
+    "first_native_name": "Andrew",
+    "last_native_name": "Savage",
+    "middle_native_name": "D.",
+    "department": "Cybersecurity",
+    "building": "Agmashenebeli 3",
+    "room": "LPT1408",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "John",
+      "last_name": "Smith"
+    },
+    "phone": "+998598111113",
+    "email": "andrew.savage@leverx.com",
+    "telegram": "@andrew_savage",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "4",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar4.webp",
+    "first_name": "Lula",
+    "last_name": "Anguilar",
+    "first_native_name": "Lula",
+    "last_native_name": "Anguilar",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1403",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "John",
+      "last_name": "Smith"
+    },
+    "phone": "+998598111114",
+    "email": "lula.anguilar@leverx.com",
+    "telegram": "@lula_anguilar",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "5",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar5.webp",
+    "first_name": "Suzanne",
+    "last_name": "Taylor",
+    "first_native_name": "Suzanne",
+    "last_native_name": "Taylor",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1403",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "John",
+      "last_name": "Smith"
+    },
+    "phone": "+998598111115",
+    "email": "suzanne.taylor@leverx.com",
+    "telegram": "@suzanne_taylor",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "6",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar6.webp",
+    "first_name": "Fintan",
+    "last_name": "Cruz",
+    "first_native_name": "Fintan",
+    "last_native_name": "Cruz",
+    "middle_native_name": "D.",
+    "department": "Tech Support",
+    "building": "Agmashenebeli 3",
+    "room": "LPT1408",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "2",
+      "first_name": "Brendan",
+      "last_name": "Krueger"
+    },
+    "phone": "+998598111116",
+    "email": "fintan.cruz@leverx.com",
+    "telegram": "@fintan_cruz",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "7",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar7.webp",
+    "first_name": "Jovanna",
+    "last_name": "Eizenberg",
+    "first_native_name": "Jovanna",
+    "last_native_name": "Eizenberg",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1403",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "2",
+      "first_name": "Brendan",
+      "last_name": "Krueger"
+    },
+    "phone": "+998598111117",
+    "email": "jovanna.eizenberg@leverx.com",
+    "telegram": "@jovanna_eizenberg",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "8",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar8.webp",
+    "first_name": "Francesco",
+    "last_name": "Reed",
+    "first_native_name": "Francesco",
+    "last_native_name": "Reed",
+    "middle_native_name": "D.",
+    "department": "Tech Support",
+    "building": "Agmashenebeli 3",
+    "room": "LPT1408",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "Brendan",
+      "last_name": "Krueger"
+    },
+    "phone": "+998598111118",
+    "email": "francesco.reed@leverx.com",
+    "telegram": "@francesco_reed",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "9",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar9.webp",
+    "first_name": "Bernarda",
+    "last_name": "Freak",
+    "first_native_name": "Bernarda",
+    "last_native_name": "Freak",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1408",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "John",
+      "last_name": "Smith"
+    },
+    "phone": "+998598111119",
+    "email": "bernarda.freak@leverx.com",
+    "telegram": "@bernarda_freak",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+  {
+    "_id": "10",
+    "role": "Employee",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "isRemoteWork": true,
+    "user_avatar": "./assets/avatars/avatar10.webp",
+    "first_name": "Steve",
+    "last_name": "Cook",
+    "first_native_name": "Steve",
+    "last_native_name": "Cook",
+    "middle_native_name": "D.",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "LPT1408",
+    "date_birth": { "year": 1901, "month": 1, "day": 1 },
+    "desk_number": 20,
+    "manager": {
+      "id": "1",
+      "first_name": "John",
+      "last_name": "Smith"
+    },
+    "phone": "+998598111110",
+    "email": "steve.cook@leverx.com",
+    "telegram": "@steve_cook",
+    "cnumber": "C598111111",
+    "citizenship": "Georgia",
+    "visa": [
+      {
+        "issuing_country": "Poland",
+        "type": "National visa type D",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  },
+{
+    "_id": "28",
+    "role": "Admin",
+    "password_hash": "$2b$10$GlkQK.0iS.n2Am/3cvze9.OIzv5bh4DlSl/Ev7rFb3FtBqfS9wUXq",
+    "first_name": "Hermione",
+    "last_name": "Granger",
+    "user_avatar": "./assets/avatars/profile-avatar.webp",
+    "department": "Web & Mobile",
+    "building": "Kazbegi 5",
+    "room": "1404",
+    "desk_number": "21",
+    "floor": "18",
+    "id_of_team": "3",
+    "manager": null,
+    "phone": "+998598888888",
+    "email": "hermione.granger@leverx.com",
+    "telegram": "@hermione_granger",
+    "cnumber": "C5386116",
+    "citizenship": "Country",
+    "visa": [
+      {
+        "type": "National visa type D",
+        "issuing_country": "Country",
+        "start_date": "2022-05-10",
+        "end_date": "2023-05-10"
+      },
+      {
+        "type": "National visa type D",
+        "issuing_country": "Country",
+        "start_date": 1652158800000,
+        "end_date": 1683608400000
+      }
+    ]
+  }
+]

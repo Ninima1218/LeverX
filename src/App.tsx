@@ -1,23 +1,32 @@
+// src/App.tsx
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
+import Settings from "./pages/Settings";
+import UserDetails from "./pages/UserDetails";
 
-const Home = () => <h1>Home OK</h1>;
-const SignIn = () => <h1>Sign In OK</h1>;
-const SignUp = () => <h1>Sign Up OK</h1>;
-
-const App: React.FC = () => {
-  return (
-    <>
-      <nav style={{ padding: 12 }}>
-        <Link to="/">Home</Link> | <Link to="/sign-in">Sign In</Link> | <Link to="/sign-up">Sign Up</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-      </Routes>
-    </>
-  );
+const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+  const { auth } = useAuth();
+  return auth.userId ? children : <Navigate to="/sign-in" replace />;
 };
 
-export default App;
+const AdminRoute = ({ children }: { children: JSX.Element }) => {
+  const { auth } = useAuth();
+  return auth.role === "Admin" ? children : <Navigate to="/" replace />;
+};
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path="/users/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
+      <Route path="/settings" element={<PrivateRoute><AdminRoute><Settings /></AdminRoute></PrivateRoute>} />
+      <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}

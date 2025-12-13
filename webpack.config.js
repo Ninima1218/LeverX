@@ -7,56 +7,39 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     publicPath: "/",
-    clean: true,
+    clean: true
   },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
-  },
+  resolve: { extensions: [".ts", ".tsx", ".js", ".jsx"] },
   module: {
     rules: [
-      {
-        test: /\.(ts|tsx)$/,
-        use: "babel-loader",
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
-      {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
-      },
+      { test: /\.(ts|tsx)$/, use: "babel-loader", exclude: /node_modules/ },
+      { test: /\.s[ac]ss$/i, use: ["style-loader", "css-loader", "sass-loader"] },
+      { test: /\.css$/i, use: ["style-loader", "css-loader"] },
       {
         test: /\.(png|jpe?g|gif|webp|svg)$/i,
         type: "asset/resource",
-        generator: { filename: "assets/images/[name][ext]" },
+        generator: { filename: "assets/images/[name][ext]" }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)$/i,
         type: "asset/resource",
-        generator: { filename: "assets/fonts/[name][ext]" },
-      },
-    ],
+        generator: { filename: "assets/fonts/[name][ext]" }
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "public/index.html"),
       filename: "index.html",
-      inject: "body",
-    }),
+      inject: "body"
+    })
   ],
   devServer: {
     historyApiFallback: true,
     port: 3000,
     open: true,
     client: { overlay: true },
-    proxy: [
-      {
-        context: ["/api"],
-        target: "http://localhost:3001",
-      },
-    ],
+    proxy: { "/api": "http://localhost:3001" }
   },
-  devtool: "source-map",
+  devtool: "source-map"
 };
