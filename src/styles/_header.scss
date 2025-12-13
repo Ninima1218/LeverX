@@ -3,30 +3,38 @@
     align-items: center;
     justify-content: space-between;
     background-color: var(--primary-color);
-    color: var(--card-color);
+    color: #fff;
     padding: 16px 40px;
-    width: 100vw;
+    width: 100%;
     height: 60px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001;
 
     &__left {
         display: flex;
         flex-direction: column;
         gap: 2px;
 
-        h3 {
+        h3,
+        h1 {
             margin: 0;
+            color: #fff;
+        }
+
+        h3 {
             font-size: 12px;
             font-weight: 500;
             letter-spacing: 1px;
-            color: var(--card-color);
         }
 
         h1 {
-            margin: 0;
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 1.2px;
-            color: var(--card-color);
         }
     }
 
@@ -37,7 +45,7 @@
         .address-book-title {
             font-size: 18px;
             font-weight: 500;
-            color: var(--card-color);
+            color: #fff;
         }
     }
 
@@ -48,13 +56,24 @@
     }
 }
 
+.company-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+
+    &:hover {
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+        color: #faebb3;
+    }
+}
+
 .support-btn,
 .signout-btn {
     display: flex;
     align-items: center;
     gap: 8px;
     background: var(--button-color);
-    color: var(--card-color);
+    color: #fff;
     border: none;
     padding: 4px 10px;
     border-radius: 22px;
@@ -63,7 +82,7 @@
     transition: background 0.2s;
 
     &:hover {
-        background: var(--primary-color);
+        background: #5c85cc;
     }
 }
 
@@ -74,9 +93,10 @@
     background: var(--button-color);
     border-radius: 22px;
     padding: 0 10px 0 0;
+    transition: background 0.2s;
 
     &:hover {
-        background: var(--primary-color);
+        background: #5c85cc;
     }
 
     .user-avatar {
@@ -89,7 +109,74 @@
     .user-name {
         font-size: 10px;
         font-weight: 500;
-        color: var(--card-color);
+        color: #fff;
         margin-left: 2px;
+    }
+}
+
+.burger-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+
+    img {
+        width: 34px;
+        height: 34px;
+        filter: invert(1);
+    }
+}
+
+.menu--mobile {
+    position: fixed;
+    top: 60px;
+    left: -100%;
+    width: 80vw;
+    max-width: 320px;
+    height: calc(100vh - 60px);
+    background: var(--card-color);
+    color: var(--text-color);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+
+    &.open {
+        left: 0;
+    }
+
+    .menu-link {
+        font-size: 16px;
+        color: var(--text-color);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .menu-footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .header__center,
+    .header__right {
+        display: none;
+    }
+
+    .burger-btn {
+        display: flex;
     }
 }

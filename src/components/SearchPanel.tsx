@@ -1,85 +1,64 @@
 import React, { useState } from "react";
 
-const SearchPanel: React.FC<{ onChange: (f: any) => void }> = ({ onChange }) => {
+type Props = {
+  onChange: (filter: any) => void;
+};
+
+const SearchPanel: React.FC<Props> = ({ onChange }) => {
   const [mode, setMode] = useState<"basic" | "advanced">("basic");
-  const [basic, setBasic] = useState("");
-  const [adv, setAdv] = useState({
-    name: "", email: "", phone: "", telegram: "",
-    building: "", room: "", department: ""
-  });
+  const [form, setForm] = useState<any>({});
 
-  const submitBasic = (e: React.FormEvent) => {
-    e.preventDefault();
-    onChange({ name: basic });
-  };
-
-  const submitAdv = (e: React.FormEvent) => {
-    e.preventDefault();
-    onChange({
-      name: adv.name, email: adv.email, phone: adv.phone, telegram: adv.telegram,
-      building: adv.building === "Any" ? "" : adv.building,
-      room: adv.room, department: adv.department === "Any" ? "" : adv.department
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    const updated = { ...form, [name]: value };
+    setForm(updated);
+    onChange(updated);
   };
 
   return (
-    <section className="search-filter-section">
-      <input type="radio" name="search-mode" id="basic-search" className="search-radio" checked={mode==="basic"} onChange={() => setMode("basic")} />
-      <input type="radio" name="search-mode" id="advanced-search" className="search-radio" checked={mode==="advanced"} onChange={() => setMode("advanced")} />
+    <div className="search-filter-section">
       <div className="search-tabs">
-        <label htmlFor="basic-search" className={`search-tab ${mode==="basic"?"active":""}`}>Basic Search</label>
-        <label htmlFor="advanced-search" className={`search-tab ${mode==="advanced"?"active":""}`}>Advanced Search</label>
+        <button className={`search-tab ${mode === "basic" ? "active" : ""}`} onClick={() => setMode("basic")}>
+          Basic Search
+        </button>
+        <button className={`search-tab ${mode === "advanced" ? "active" : ""}`} onClick={() => setMode("advanced")}>
+          Advanced Search
+        </button>
       </div>
 
-      <form className={`search-form search-form-basic ${mode==="basic"?"show":""}`} onSubmit={submitBasic}>
+      <form className={`search-form ${mode === "basic" ? "search-form-basic show" : "search-form-basic"}`}>
         <div className="input-wrapper">
-          <img src="/assets/icons/search.svg" alt="search icon" className="search-icon" />
-          <input type="text" id="employee-search" placeholder="John Smith" value={basic} onChange={e => setBasic(e.target.value)} />
+          <input
+            type="text"
+            name="name"
+            placeholder="Search by name"
+            value={form.name || ""}
+            onChange={handleChange}
+          />
+          <img className="search-icon" src={require("../assets/icons/search.svg")} alt="search" />
         </div>
         <button type="submit" className="search-btn">SEARCH</button>
       </form>
 
-      <form className={`search-form search-form-advanced ${mode==="advanced"?"show":""}`} onSubmit={submitAdv}>
-        {/* replicate your advanced form fields */}
-        {/* Name */}
-        <label className="field-label" htmlFor="adv-name">Name</label>
-        <input id="adv-name" className="text-input" value={adv.name} onChange={e => setAdv({ ...adv, name: e.target.value })} />
-        {/* Email */}
-        <label className="field-label" htmlFor="adv-email">Email</label>
-        <input id="adv-email" type="email" className="text-input" value={adv.email} onChange={e => setAdv({ ...adv, email: e.target.value })} />
-        {/* Phone & Telegram */}
-        <div className="field-row">
-          <div className="field-col">
-            <label className="field-label" htmlFor="adv-phone">Phone</label>
-            <input id="adv-phone" className="text-input" value={adv.phone} onChange={e => setAdv({ ...adv, phone: e.target.value })} />
-          </div>
-          <div className="field-col">
-            <label className="field-label" htmlFor="adv-telegram">Telegram</label>
-            <input id="adv-telegram" className="text-input" value={adv.telegram} onChange={e => setAdv({ ...adv, telegram: e.target.value })} />
-          </div>
-        </div>
-        {/* Building & Room */}
-        <div className="field-row">
-          <div className="field-col">
-            <label className="field-label" htmlFor="adv-building">Building</label>
-            <select id="adv-building" className="select-input" value={adv.building} onChange={e => setAdv({ ...adv, building: e.target.value })}>
-              <option>Any</option><option>Kazbegi 5</option><option>Agmashenebeli 3</option>
-            </select>
-          </div>
-          <div className="field-col">
-            <label className="field-label" htmlFor="adv-room">Room</label>
-            <input id="adv-room" className="text-input" value={adv.room} onChange={e => setAdv({ ...adv, room: e.target.value })} />
-          </div>
-        </div>
-        {/* Department */}
-        <label className="field-label" htmlFor="adv-department">Department</label>
-        <select id="adv-department" className="select-input" value={adv.department} onChange={e => setAdv({ ...adv, department: e.target.value })}>
-          <option>Any</option><option>Web &amp; Mobile</option><option>Tech Support</option><option>Cybersecurity</option>
+      <form className={`search-form ${mode === "advanced" ? "search-form-advanced show" : "search-form-advanced"}`}>
+        <input type="text" name="email" placeholder="Email" value={form.email || ""} onChange={handleChange} />
+        <input type="text" name="phone" placeholder="Phone" value={form.phone || ""} onChange={handleChange} />
+        <input type="text" name="telegram" placeholder="Telegram" value={form.telegram || ""} onChange={handleChange} />
+        <input type="text" name="room" placeholder="Room" value={form.room || ""} onChange={handleChange} />
+        <select name="building" value={form.building || ""} onChange={handleChange}>
+          <option value="">Any Building</option>
+          <option value="LPT">LPT</option>
+          <option value="B1">B1</option>
         </select>
-
+        <select name="department" value={form.department || ""} onChange={handleChange}>
+          <option value="">Any Department</option>
+          <option value="Web & Mobile">Web & Mobile</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+        </select>
         <button type="submit" className="search-btn">SEARCH</button>
       </form>
-    </section>
+    </div>
   );
 };
+
 export default SearchPanel;

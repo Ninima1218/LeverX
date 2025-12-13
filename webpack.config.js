@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
+  mode: "development",
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -9,21 +10,47 @@ module.exports = {
     publicPath: "/",
     clean: true
   },
-  resolve: { extensions: [".ts", ".tsx", ".js", ".jsx"] },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"]
+  },
   module: {
     rules: [
-      { test: /\.(ts|tsx)$/, use: "babel-loader", exclude: /node_modules/ },
-      { test: /\.s[ac]ss$/i, use: ["style-loader", "css-loader", "sass-loader"] },
-      { test: /\.css$/i, use: ["style-loader", "css-loader"] },
+      {
+        test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
+        use: "babel-loader"
+      },
+
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: { importLoaders: 1, sourceMap: true, url: true }
+          },
+          "sass-loader"
+        ]
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"]
+      },
+
       {
         test: /\.(png|jpe?g|gif|webp|svg)$/i,
         type: "asset/resource",
-        generator: { filename: "assets/images/[name][ext]" }
+        generator: {
+          filename: "assets/images/[name][ext]"
+        }
       },
+
       {
         test: /\.(woff2?|eot|ttf|otf)$/i,
         type: "asset/resource",
-        generator: { filename: "assets/fonts/[name][ext]" }
+        generator: {
+          filename: "assets/fonts/[name][ext]"
+        }
       }
     ]
   },
@@ -35,11 +62,15 @@ module.exports = {
     })
   ],
   devServer: {
-    historyApiFallback: true,
     port: 3000,
     open: true,
-    client: { overlay: true },
-    proxy: { "/api": "http://localhost:3001" }
+    historyApiFallback: true,
+    proxy: {
+      "/api": "http://localhost:3001"
+    },
+    client: {
+      overlay: true
+    }
   },
   devtool: "source-map"
 };
