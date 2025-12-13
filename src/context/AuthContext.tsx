@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState } from "react";
 import { Role } from "../../server/src/server-types";
+import { User } from "../../server/src/server-types";
 
 type AuthState = { userId: string | number | null; role: Role | null };
 type AuthCtx = {
   auth: AuthState;
   setAuth: (userId: string | number, role: Role) => void;
+  user: User | null;
   clearAuth: () => void;
 };
 

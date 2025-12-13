@@ -1,10 +1,26 @@
 .search-filter-section {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 12px;
     width: 40%;
-    max-width: 340px;
+    min-width: 320px;
 
+.search-panel .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+.search-panel input,
+.search-panel select {
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-color);
+    color: var(--text-color);
+}
+    
     .search-tabs {
         display: flex;
         margin-bottom: 18px;
@@ -79,4 +95,22 @@
             }
         }
     }
+        .nothing-found {
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 40px 0;
+        }
+    
+        .nothing-found .title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+    
+        .nothing-found .desc {
+            font-size: 12px;
+            color: var(--muted-text-color);
+            margin-top: 6px;
+        }
 }

@@ -5,9 +5,6 @@ import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 
 import "./styles/global.scss";
-import "./styles/_header.scss";
-import "./styles/_employee.scss";
-import "./styles/_search.scss";
 
 const rootEl = document.getElementById("root");
 if (!rootEl) {
