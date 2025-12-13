@@ -28,7 +28,7 @@ const Header: React.FC = () => {
         <div className="header__right">
           <button className="support-btn">Support</button>
           <div className="user-info">
-            <img className="user-avatar" src={require("../assets/avatars/avatar1.webp")} alt="avatar" />
+            <img className="user-avatar" src="/assets/avatars/profile-avatar.webp" alt="avatar" />
             <span className="user-name">Hermione</span>
           </div>
           <button className="signout-btn">
@@ -45,12 +45,14 @@ const Header: React.FC = () => {
           <button className="close-btn" onClick={close}>×</button>
         </div>
         <div className="user-info" onClick={() => window.location.href = "/profile"}>
-          <img className="user-avatar" src={require("../assets/avatars/avatar1.webp")} alt="avatar" />
+          <img className="user-avatar" src="/assets/avatars/profile-avatar.webp" alt="avatar" />
           <span className="user-name">Hermione</span>
         </div>
         <a className="menu-link" href="/address-book">Address Book</a>
         <a className="menu-link" href="/settings">Settings</a>
-        <button className="signout-btn">Sign out</button>
+        <button className="signout-btn">
+          <img className="signout-icon" src={require("../assets/icons/signout.svg")} alt="sign out" />
+        </button>
         <div className="menu-footer">
           <button className="support-btn">Support</button>
         </div>

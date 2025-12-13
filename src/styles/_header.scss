@@ -85,6 +85,11 @@
         background: #5c85cc;
     }
 }
+.signout-btn .signout-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
 
 .user-info {
     display: flex;

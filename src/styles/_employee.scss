@@ -24,6 +24,7 @@
                 border: none;
                 width: 28px;
                 height: 28px;
+                object-fit: contain;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -32,6 +33,7 @@
                 img {
                     width: 20px;
                     height: 20px;
+                    object-fit: contain;
                     filter: grayscale(100%) opacity(0.2);
                     transition: filter 0.2s;
                 }
@@ -225,6 +227,11 @@
                     align-items: flex-start;
                     gap: 12px;
                     font-size: 12px;
+                }
+                
+                .employee-section .view-btn img {
+                    width: 16px;
+                    height: 16px;
                 }
             }
         }

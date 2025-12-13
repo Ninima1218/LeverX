@@ -19,14 +19,16 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ name, department, room, ava
         className="employee-avatar"
       />
       <div className="employee-info">
-        <h3 className="employee-name">{name}</h3>
-        <div className="employee-position">
-          <img src={bagIcon} alt="department icon" />
-          <span>{department}</span>
-        </div>
-        <div className="employee-room">
-          <img src={doorIcon} alt="room icon" />
-          <span>{room}</span>
+        <div className="employee-name">{name}</div>
+        <div className="employee-details">
+          <div className="employee-position">
+            <img src={bagIcon} alt="department icon" />
+            <span>{department}</span>
+          </div>
+          <div className="employee-room">
+            <img src={doorIcon} alt="room icon" />
+            <span>{room}</span>
+          </div>
         </div>
       </div>
     </div>

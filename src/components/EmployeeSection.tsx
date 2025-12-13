@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import EmployeeCard from "./EmployeeCard";
+import React, { useState, useEffect } from "react";
 import { User } from "../../server/src/server-types";
+import EmployeeCard from "./EmployeeCard";
 
 type Props = {
-  filter: any;
+  filter?: Record<string, any>;
 };
 
-const EmployeeSection: React.FC<{ filter: any }> = ({ filter }) => {
+const EmployeeSection: React.FC<Props> = ({ filter }) => {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [employees, setEmployees] = useState<User[]>([]);
 
@@ -17,10 +17,14 @@ const EmployeeSection: React.FC<{ filter: any }> = ({ filter }) => {
       .catch(err => console.error("Failed to load users", err));
   }, []);
 
+  const safeFilter = filter || {};
+
   const filtered = employees.filter(emp =>
-    Object.entries(filter).every(([key, val]) =>
-      val ? String((emp as any)[key] || "").toLowerCase().includes(String(val).toLowerCase()) : true
-    )
+    Object.entries(safeFilter).every(([key, val]) => {
+      if (!val) return true;
+      const field = (emp as any)[key];
+      return field && String(field).toLowerCase().includes(String(val).toLowerCase());
+    })
   );
 
   return (
@@ -28,10 +32,16 @@ const EmployeeSection: React.FC<{ filter: any }> = ({ filter }) => {
       <div className="employee-toolbar">
         <span className="employee-count">Employees: {filtered.length}</span>
         <div className="view-toogle">
-          <button className={`view-btn ${view === "grid" ? "active" : ""}`} onClick={() => setView("grid")}>
+          <button
+            className={`view-btn ${view === "grid" ? "active" : ""}`}
+            onClick={() => setView("grid")}
+          >
             <img src={require("../assets/icons/grid.svg")} alt="grid" />
           </button>
-          <button className={`view-btn ${view === "list" ? "active" : ""}`} onClick={() => setView("list")}>
+          <button
+            className={`view-btn ${view === "list" ? "active" : ""}`}
+            onClick={() => setView("list")}
+          >
             <img src={require("../assets/icons/list.svg")} alt="list" />
           </button>
         </div>
@@ -60,6 +70,5 @@ const EmployeeSection: React.FC<{ filter: any }> = ({ filter }) => {
     </section>
   );
 };
-
 
 export default EmployeeSection;
