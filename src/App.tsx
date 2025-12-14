@@ -6,6 +6,7 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Settings from "./pages/Settings";
 import UserDetails from "./pages/UserDetails";
+import AddressBook from "./pages/AddressBook";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { auth } = useAuth();
@@ -14,18 +15,24 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
 const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { auth } = useAuth();
-  return auth.role === "Admin" ? children : <Navigate to="/" replace />;
+  return auth.role === "Admin" ? children : <Navigate to="/home" replace />;
 };
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
-      <Route path="/users/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
-      <Route path="/settings" element={<PrivateRoute><AdminRoute><Settings /></AdminRoute></PrivateRoute>} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/sign-up" element={<SignUp />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
+
+      <Route path="/address-book" element={<PrivateRoute><AddressBook /></PrivateRoute>} />
+
+      <Route path="/users/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
+
+      <Route path="/settings" element={<PrivateRoute><AdminRoute><Settings /></AdminRoute></PrivateRoute>} />
+
+      <Route path="*" element={<Navigate to="/sign-in" replace />} />
     </Routes>
   );
 }

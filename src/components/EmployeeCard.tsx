@@ -11,6 +11,13 @@ type EmployeeCardProps = {
 };
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ name, department, room, avatar }) => {
+   let avatarSrc: string;
+  try {
+    avatarSrc = avatar ? require(`../assets/avatars/${avatar}`) : defaultAvatar;
+  } catch {
+    avatarSrc = defaultAvatar;
+  }
+  
   return (
     <div className="employee-card">
       <img

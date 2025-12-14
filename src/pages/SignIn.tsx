@@ -1,26 +1,56 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { SignInResponse } from "../../server/src/server-types";
+import { User } from "../types/User";
+
+type SignInResp = {
+  success: boolean;
+  message?: string;
+  user?: User;
+};
 
 const SignIn: React.FC = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState(""); const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false); const [error, setError] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
 
   const submit = async (e: React.FormEvent) => {
-    e.preventDefault(); setError("");
+    e.preventDefault();
+    setError("");
+
     try {
-      const res = await fetch("/api/sign-in", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email.trim(), password }) });
-      const data: SignInResponse = await res.json();
+      const res = await fetch("/api/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), password })
+      });
+
+      const data: SignInResp = await res.json();
+
       if (!res.ok || !data.success || !data.user?.id) {
-        setError(data.message || "Sign-in failed"); return;
+        setError(data.message || "Sign-in failed");
+        return;
       }
-      setAuth(data.user.id, data.user.role || "Employee");
-      if (!remember) { /* optional: store in session */ }
-      navigate("/");
-    } catch { setError("Server unavailable"); }
+
+      if (remember) {
+        localStorage.setItem("userId", String(data.user.id));
+      }
+
+      setAuth(prev => ({
+        ...prev,
+        userId: String(data.user!.id),
+        role: data.user!.role,
+        user: data.user!
+      }));
+
+      navigate("/home", { replace: true });
+    } catch {
+      setError("Server unavailable");
+    }
   };
 
   return (
@@ -35,7 +65,7 @@ const SignIn: React.FC = () => {
             </div>
             <div className="input-wrapper">
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" className="text-input" placeholder="Enter password" required value={password} onChange={e => setPassword(e.target.value)} />
+              <input id="password" type="password" autoComplete="current-password" className="text-input" placeholder="Enter password" required value={password} onChange={e => setPassword(e.target.value)} />
             </div>
             <div className="input-wrapper checkbox-wrapper">
               <input id="remember" type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />

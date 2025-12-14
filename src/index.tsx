@@ -14,10 +14,10 @@ if (!rootEl) {
 const root = ReactDOM.createRoot(rootEl);
 root.render(
   <React.StrictMode>
+    <AuthProvider>
     <BrowserRouter>
-      <AuthProvider>
         <App />
-      </AuthProvider>
     </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
