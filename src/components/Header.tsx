@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../store";
 import { clearAuth } from "../store/authSlice";
 
@@ -10,6 +10,7 @@ const Header: React.FC = () => {
 
   const auth = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) return;
@@ -20,15 +21,15 @@ const Header: React.FC = () => {
 
   const signOut = () => {
     dispatch(clearAuth());
-    window.location.href = "/sign-in";
+    navigate("/sign-in", { replace: true });
   };
 
   return (
     <>
       <header className="header">
         <Link to="/home" className="header__left">
-        <h3>LEVERX</h3>
-        <h1>EMPLOYEE SERVICES</h1>
+          <h3>LEVERX</h3>
+          <h1>EMPLOYEE SERVICES</h1>
         </Link>
 
         <div className="header__center">
@@ -52,7 +53,9 @@ const Header: React.FC = () => {
           <div className="user-info">
             <img
               className="user-avatar"
-              src={auth.user?.user_avatar || "/assets/avatars/profile-avatar.webp"}
+              src={auth.user?.user_avatar
+                ? `/assets/avatars/${auth.user.user_avatar}`
+                : "/assets/avatars/profile-avatar.webp"}
               alt="avatar"
             />
             <span className="user-name">{auth.user?.first_name ?? "User"}</span>
@@ -85,13 +88,12 @@ const Header: React.FC = () => {
           <button className="close-btn" onClick={close}>×</button>
         </div>
 
-        <div
-          className="user-info"
-          onClick={() => (window.location.href = "/profile")}
-        >
+        <div className="user-info" onClick={() => navigate("/profile")}>
           <img
             className="user-avatar"
-            src={auth.user?.user_avatar || "/assets/avatars/profile-avatar.webp"}
+            src={auth.user?.user_avatar
+              ? `/assets/avatars/${auth.user.user_avatar}`
+              : "/assets/avatars/profile-avatar.webp"}
             alt="avatar"
           />
           <span className="user-name">{auth.user?.first_name ?? "User"}</span>

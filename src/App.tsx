@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+import { useAppSelector } from "./store";
+
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
@@ -9,13 +10,13 @@ import UserDetails from "./pages/UserDetails";
 import AddressBook from "./pages/AddressBook";
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const { auth } = useAuth();
-  return auth.userId ? children : <Navigate to="/sign-in" replace />;
+  const userId = useAppSelector(state => state.auth.userId);
+  return userId ? children : <Navigate to="/sign-in" replace />;
 };
 
 const AdminRoute = ({ children }: { children: JSX.Element }) => {
-  const { auth } = useAuth();
-  return auth.role === "Admin" ? children : <Navigate to="/home" replace />;
+  const role = useAppSelector(state => state.auth.role);
+  return role === "Admin" ? children : <Navigate to="/home" replace />;
 };
 
 export default function App() {
@@ -30,7 +31,13 @@ export default function App() {
 
       <Route path="/users/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />
 
-      <Route path="/settings" element={<PrivateRoute><AdminRoute><Settings /></AdminRoute></PrivateRoute>} />
+      <Route path="/settings" element={
+        <PrivateRoute>
+          <AdminRoute>
+            <Settings />
+          </AdminRoute>
+        </PrivateRoute>
+      } />
 
       <Route path="*" element={<Navigate to="/sign-in" replace />} />
     </Routes>
