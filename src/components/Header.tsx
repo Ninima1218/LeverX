@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAppSelector, useAppDispatch } from "../store";
+import { clearAuth } from "../store/authSlice";
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen(v => !v);
   const close = () => setOpen(false);
 
-  const { auth, setAuth } = useAuth();
+  const auth = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!open) return;
@@ -17,19 +19,19 @@ const Header: React.FC = () => {
   }, [open]);
 
   const signOut = () => {
-    setAuth({ userId: null, role: null, user: null });
-    window.location.href = "/sign-in"; 
+    dispatch(clearAuth());
+    window.location.href = "/sign-in";
   };
 
   return (
     <>
       <header className="header">
-        <div className="header__left">
-          <h3>LEVERX </h3>
-          <h1>EMPLOYEE SERVICES</h1>
-        </div>
+        <Link to="/home" className="header__left">
+        <h3>LEVERX</h3>
+        <h1>EMPLOYEE SERVICES</h1>
+        </Link>
 
-         <div className="header__center">
+        <div className="header__center">
           <div className="address-book-title">
             <Link to="/address-book" className="address-link">Address Book</Link>
             {auth.role === "Admin" && (

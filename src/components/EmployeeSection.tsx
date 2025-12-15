@@ -1,31 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { User } from "../../server/src/server-types";
+import React, { useState } from "react";
 import EmployeeCard from "./EmployeeCard";
+import { useGetUsersQuery } from "../store/usersApi";
+import { useAppSelector } from "../store";
 
-type Props = {
-  filter?: Record<string, any>;
-};
-
-const EmployeeSection: React.FC<Props> = ({ filter }) => {
+const EmployeeSection: React.FC = () => {
   const [view, setView] = useState<"grid" | "list">("grid");
-  const [employees, setEmployees] = useState<User[]>([]);
 
-  useEffect(() => {
-    fetch("/api/users")
-      .then(res => res.json())
-      .then(data => setEmployees(data))
-      .catch(err => console.error("Failed to load users", err));
-  }, []);
+  const { data: employees = [], isLoading, error } = useGetUsersQuery();
 
-  const safeFilter = filter || {};
+  const filter = useAppSelector(state => state.filter);
 
   const filtered = employees.filter(emp =>
-    Object.entries(safeFilter).every(([key, val]) => {
+    Object.entries(filter).every(([key, val]) => {
       if (!val) return true;
       const field = (emp as any)[key];
       return field && String(field).toLowerCase().includes(String(val).toLowerCase());
     })
   );
+
+  if (isLoading) return <p>Loading employees...</p>;
+  if (error) return <p>Error loading users</p>;
 
   return (
     <section className="employee-section">

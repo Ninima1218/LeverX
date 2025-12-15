@@ -1,32 +1,42 @@
 import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store";
+import { setFilter, clearFilter } from "../store/filterSlice";
 
-type Props = {
-  onChange: (filter: any) => void;
-};
-
-const SearchPanel: React.FC<Props> = ({ onChange }) => {
+const SearchPanel: React.FC = () => {
   const [mode, setMode] = useState<"basic" | "advanced">("basic");
-  const [form, setForm] = useState<any>({});
+  const dispatch = useAppDispatch();
+  const form = useAppSelector(state => state.filter);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const updated = { ...form, [name]: value };
-    setForm(updated);
-    onChange(updated);
+    dispatch(setFilter({ key: name, value }));
+  };
+
+  const handleClear = () => {
+    dispatch(clearFilter());
   };
 
   return (
     <div className="search-filter-section">
       <div className="search-tabs">
-        <button className={`search-tab ${mode === "basic" ? "active" : ""}`} onClick={() => setMode("basic")}>
+        <button
+          className={`search-tab ${mode === "basic" ? "active" : ""}`}
+          onClick={() => setMode("basic")}
+        >
           Basic Search
         </button>
-        <button className={`search-tab ${mode === "advanced" ? "active" : ""}`} onClick={() => setMode("advanced")}>
+        <button
+          className={`search-tab ${mode === "advanced" ? "active" : ""}`}
+          onClick={() => setMode("advanced")}
+        >
           Advanced Search
         </button>
       </div>
 
-      <form className={`search-form ${mode === "basic" ? "search-form-basic show" : "search-form-basic"}`}>
+      <form
+        className={`search-form ${mode === "basic" ? "search-form-basic show" : "search-form-basic"}`}
+        onSubmit={e => e.preventDefault()}
+      >
         <div className="input-wrapper">
           <input
             type="text"
@@ -35,16 +45,48 @@ const SearchPanel: React.FC<Props> = ({ onChange }) => {
             value={form.name || ""}
             onChange={handleChange}
           />
-          <img className="search-icon" src={require("../assets/icons/search.svg")} alt="search" />
+          <img
+            className="search-icon"
+            src={require("../assets/icons/search.svg")}
+            alt="search"
+          />
         </div>
         <button type="submit" className="search-btn">SEARCH</button>
+        <button type="button" className="search-btn" onClick={handleClear}>CLEAR</button>
       </form>
 
-      <form className={`search-form ${mode === "advanced" ? "search-form-advanced show" : "search-form-advanced"}`}>
-        <input type="text" name="email" placeholder="Email" value={form.email || ""} onChange={handleChange} />
-        <input type="text" name="phone" placeholder="Phone" value={form.phone || ""} onChange={handleChange} />
-        <input type="text" name="telegram" placeholder="Telegram" value={form.telegram || ""} onChange={handleChange} />
-        <input type="text" name="room" placeholder="Room" value={form.room || ""} onChange={handleChange} />
+      <form
+        className={`search-form ${mode === "advanced" ? "search-form-advanced show" : "search-form-advanced"}`}
+        onSubmit={e => e.preventDefault()}
+      >
+        <input
+          type="text"
+          name="email"
+          placeholder="Email"
+          value={form.email || ""}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="phone"
+          placeholder="Phone"
+          value={form.phone || ""}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="telegram"
+          placeholder="Telegram"
+          value={form.telegram || ""}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="room"
+          placeholder="Room"
+          value={form.room || ""}
+          onChange={handleChange}
+        />
         <select name="building" value={form.building || ""} onChange={handleChange}>
           <option value="">Any Building</option>
           <option value="LPT">LPT</option>
@@ -56,6 +98,7 @@ const SearchPanel: React.FC<Props> = ({ onChange }) => {
           <option value="Cybersecurity">Cybersecurity</option>
         </select>
         <button type="submit" className="search-btn">SEARCH</button>
+        <button type="button" className="search-btn" onClick={handleClear}>CLEAR</button>
       </form>
     </div>
   );

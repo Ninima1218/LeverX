@@ -1,5 +1,4 @@
 import React from "react";
-import defaultAvatar from "../assets/avatars/avatar1.webp";
 import bagIcon from "../assets/icons/bag.svg";
 import doorIcon from "../assets/icons/door.svg";
 
@@ -11,17 +10,15 @@ type EmployeeCardProps = {
 };
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ name, department, room, avatar }) => {
-   let avatarSrc: string;
-  try {
-    avatarSrc = avatar ? require(`../assets/avatars/${avatar}`) : defaultAvatar;
-  } catch {
-    avatarSrc = defaultAvatar;
-  }
-  
+
+  const avatarSrc = avatar
+    ? `/assets/avatars/${avatar}`
+    : "/assets/avatars/profile-avatar.webp";
+
   return (
     <div className="employee-card">
       <img
-        src={avatar || defaultAvatar}
+        src={avatarSrc}
         alt={`${name} avatar`}
         className="employee-avatar"
       />
