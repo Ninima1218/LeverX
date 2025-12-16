@@ -36,6 +36,17 @@
             font-weight: 700;
             letter-spacing: 1.2px;
         }
+
+        &.company-link {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
+
+            &:hover {
+                text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+                color: #faebb3;
+            }
+        }
     }
 
     &__center {
@@ -46,6 +57,19 @@
             font-size: 18px;
             font-weight: 500;
             color: #fff;
+            display: inline-flex;
+            gap: 16px;
+
+            .address-link,
+            .settings-link {
+                color: #fff;
+                text-decoration: none;
+                transition: opacity 0.2s ease;
+
+                &:hover {
+                    opacity: 0.85;
+                }
+            }
         }
     }
 
@@ -53,17 +77,6 @@
         display: flex;
         align-items: center;
         gap: 20px;
-    }
-}
-
-.company-link {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
-
-    &:hover {
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-        color: #faebb3;
     }
 }
 
@@ -85,16 +98,19 @@
         background: #5c85cc;
     }
 }
+
 .signout-btn .signout-icon {
     width: 18px;
     height: 18px;
     object-fit: contain;
 }
+
 .support-icon {
     width: 16px;
     height: 16px;
     object-fit: contain;
 }
+
 .user-info {
     display: flex;
     align-items: center;
@@ -175,6 +191,15 @@
         margin-top: auto;
         display: flex;
         justify-content: center;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        align-self: flex-end;
+        color: var(--text-color);
     }
 }
 

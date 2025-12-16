@@ -80,7 +80,7 @@ const Header: React.FC = () => {
         </button>
       </header>
 
-      <nav
+       <nav
         className={`menu--mobile ${open ? "open" : ""}`}
         onClick={e => e.stopPropagation()}
       >
@@ -88,7 +88,7 @@ const Header: React.FC = () => {
           <button className="close-btn" onClick={close}>×</button>
         </div>
 
-        <div className="user-info" onClick={() => navigate("/profile")}>
+        <div className="user-info">
           <img
             className="user-avatar"
             src={auth.user?.user_avatar
@@ -96,13 +96,10 @@ const Header: React.FC = () => {
               : "/assets/avatars/profile-avatar.webp"}
             alt="avatar"
           />
-          <span className="user-name">{auth.user?.first_name ?? "User"}</span>
+          <span className="user-name">
+            {auth.user?.first_name ?? "User"} {auth.user?.last_name ?? ""}
+          </span>
         </div>
-
-        <Link className="menu-link" to="/address-book">Address Book</Link>
-        {auth.role === "Admin" && (
-          <Link className="menu-link" to="/settings">Settings</Link>
-        )}
 
         <button className="signout-btn" onClick={signOut}>
           <img
@@ -110,7 +107,14 @@ const Header: React.FC = () => {
             src={require("../assets/icons/signout.svg")}
             alt="sign out"
           />
+          Sign Out
         </button>
+
+        <Link className="menu-link" to="/address-book">Address Book</Link>
+
+        {auth.role === "Admin" && (
+          <Link className="menu-link" to="/settings">Settings</Link>
+        )}
 
         <div className="menu-footer">
           <button className="support-btn">

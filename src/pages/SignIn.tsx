@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch } from "../store";
 import { setAuth } from "../store/authSlice";
-import { User } from "../types/User";
+import { User } from "../../server/src/server-types";
 
 type SignInResp = {
   success: boolean;
@@ -32,17 +32,17 @@ const SignIn: React.FC = () => {
 
       const data: SignInResp = await res.json();
 
-      if (!res.ok || !data.success || !data.user?.id) {
+      if (!res.ok || !data.success || !data.user?._id) {
         setError(data.message || "Sign-in failed");
         return;
       }
 
       if (remember) {
-        localStorage.setItem("userId", String(data.user.id));
+        localStorage.setItem("userId", String(data.user._id));
       }
 
       dispatch(setAuth({
-        userId: String(data.user.id),
+        userId: String(data.user._id),
         role: data.user.role,
         user: data.user
       }));

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, Role } from "../types/User";
+import { User, Role } from "../../server/src/server-types";
 
 type AuthState = {
   userId: string | null;
@@ -10,14 +10,20 @@ type AuthState = {
 const initialState: AuthState = {
   userId: null,
   role: null,
-  user: null
+  user: null,
+};
+
+type SetAuthPayload = {
+  userId: string;
+  role: Role;
+  user: User;
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuth: (state, action: PayloadAction<AuthState>) => {
+    setAuth: (state, action: PayloadAction<SetAuthPayload>) => {
       state.userId = action.payload.userId;
       state.role = action.payload.role;
       state.user = action.payload.user;
@@ -26,8 +32,8 @@ const authSlice = createSlice({
       state.userId = null;
       state.role = null;
       state.user = null;
-    }
-  }
+    },
+  },
 });
 
 export const { setAuth, clearAuth } = authSlice.actions;

@@ -1,25 +1,19 @@
 import React from "react";
 import Header from "../components/Header";
 import SearchPanel from "../components/SearchPanel";
-import EmployeeSection from "../components/EmployeeSection";
+import EmployeeTable from "../components/EmployeeTable";
 
 const AddressBook: React.FC = () => {
-  const handleSearchChange = (value: string) => {
-    // Пока просто логируем, позже можно связать с фильтрацией
-    console.log("Search value:", value);
-  };
-
   return (
     <>
       <Header />
       <main className="main-content">
         <div className="content-wrapper">
-          <SearchPanel onChange={handleSearchChange} />
-          <EmployeeSection />
+          <SearchPanel />
+          <EmployeeTable />
         </div>
       </main>
     </>
   );
 };
-
 export default AddressBook;
