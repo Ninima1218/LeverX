@@ -19,10 +19,10 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const res = await fetch("/api/sign-up", {
+      const res = await fetch("http://localhost:3001/api/sign-up", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password, role: "Employee" })
+        body: JSON.stringify({ email: email.trim(), password })
       });
 
       const data = await res.json();
@@ -42,57 +42,59 @@ const SignUp: React.FC = () => {
     <main className="main-content">
       <div className="content-wrapper">
         <section className="signup-section">
-          <h2>Create Account</h2>
-          <form className="signup-form" onSubmit={submit}>
-            <div className="input-wrapper">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                className="text-input"
-                placeholder="john.smith@leverx.com"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-              {error.includes("email") && <p className="field-error">{error}</p>}
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                className="text-input"
-                placeholder="Enter password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-              {error.toLowerCase().includes("password") && (
-                <p className="field-error">{error}</p>
-              )}
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="confirm">Confirm Password</label>
-              <input
-                id="confirm"
-                type="password"
-                className="text-input"
-                placeholder="Confirm password"
-                required
-                value={confirm}
-                onChange={e => setConfirm(e.target.value)}
-              />
-              {error.toLowerCase().includes("match") && (
-                <p className="field-error">{error}</p>
-              )}
-            </div>
-            <button type="submit" className="signup-btn">Sign Up</button>
-            {error && <p id="error" className="error-message">{error}</p>}
-          </form>
-          <p className="signin-link">
-            Already have an account? <Link to="/sign-in">Sign In</Link>
-          </p>
+          <div className="auth-wrapper">
+            <h2>Create Account</h2>
+            <form className="auth-form" onSubmit={submit}>
+              <div className="input-wrapper">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  className="text-input"
+                  placeholder="john.smith@leverx.com"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+                {error.includes("email") && <p className="field-error">{error}</p>}
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="password">Password</label>
+                <input
+                  id="password"
+                  type="password"
+                  className="text-input"
+                  placeholder="Enter password"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+                {error.toLowerCase().includes("password") && (
+                  <p className="field-error">{error}</p>
+                )}
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="confirm">Confirm Password</label>
+                <input
+                  id="confirm"
+                  type="password"
+                  className="text-input"
+                  placeholder="Confirm password"
+                  required
+                  value={confirm}
+                  onChange={e => setConfirm(e.target.value)}
+                />
+                {error.toLowerCase().includes("match") && (
+                  <p className="field-error">{error}</p>
+                )}
+              </div>
+              <button type="submit" className="btn btn-auth">Sign Up</button>
+              {error && <p id="error" className="error-message">{error}</p>}
+            </form>
+            <p className="auth-link">
+              Already have an account? <Link to="/sign-in">Sign In</Link>
+            </p>
+          </div>
         </section>
       </div>
     </main>

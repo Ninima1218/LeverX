@@ -1,14 +1,15 @@
 :root {
-    --background-color: #ebf0f3;
-    --text-color: #2b3242;
+    --background-color: #f5f5fa;
+    --secondary-background-color: #ebf0f3;
     --card-color: #ffffff;
-    --border-color: #e3e7f0;
-    --primary-color: #216ce7;
-    --secondary-background-color: #f5f7fa;
+    --text-color: #2b3242;
     --muted-text-color: #6c7385;
-    --button-color: #042bd8;
-}
+    --border-color: #e3e7f0;
 
+    --primary-color: #1e5cbe;
+    --button-color: #5591ff;
+    --button-hover-color: #3a7be0;
+}
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: #171a1f;
@@ -49,8 +50,52 @@ body {
     box-shadow: 0 1px 8px rgba(22, 50, 80, 0.08);
 }
 
+.btn {
+    background-color: var(--button-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--button-hover-color);
+    }
+
+    &:disabled {
+        background-color: var(--border-color);
+        cursor: not-allowed;
+    }
+}
+
+.btn-copy {
+    background-color: #f0f0f3;
+    color: var(--muted-text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+        background-color: #e0e0e5;
+        color: var(--text-color);
+    }
+
+    &:disabled {
+        background-color: #f5f5fa;
+        color: var(--muted-text-color);
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+}
+
 @import "./header";
 @import "./employee";
 @import "./search";
 @import "./profile";
 @import "./user-details";
+@import "./auth";

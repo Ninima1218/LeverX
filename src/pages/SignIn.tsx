@@ -24,7 +24,7 @@ const SignIn: React.FC = () => {
     setError("");
 
     try {
-      const res = await fetch("/api/sign-in", {
+      const res = await fetch("http://localhost:3001/api/sign-in", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim(), password })
@@ -57,48 +57,50 @@ const SignIn: React.FC = () => {
     <main className="main-content">
       <div className="content-wrapper">
         <section className="signin-section">
-          <h2>Sign In</h2>
-          <form className="signin-form" onSubmit={submit}>
-            <div className="input-wrapper">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                className="text-input"
-                placeholder="john.smith@leverx.com"
-                required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="input-wrapper">
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                className="text-input"
-                placeholder="Enter password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="input-wrapper checkbox-wrapper">
-              <input
-                id="remember"
-                type="checkbox"
-                checked={remember}
-                onChange={e => setRemember(e.target.checked)}
-              />
-              <label htmlFor="remember">Remember me</label>
-            </div>
-            <button type="submit" className="signin-btn">Sign In</button>
-            {error && <p id="error" className="error-message">{error}</p>}
-          </form>
-          <p className="signup-link">
-            Don’t have an account? <Link to="/sign-up">Sign Up</Link>
-          </p>
+          <div className="auth-wrapper">
+            <h2>Sign In</h2>
+            <form className="auth-form" onSubmit={submit}>
+              <div className="input-wrapper">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  className="text-input"
+                  placeholder="john.smith@leverx.com"
+                  required
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="password">Password</label>
+                <input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  className="text-input"
+                  placeholder="Enter password"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="input-wrapper checkbox-wrapper">
+                <input
+                  id="remember"
+                  type="checkbox"
+                  checked={remember}
+                  onChange={e => setRemember(e.target.checked)}
+                />
+                <label htmlFor="remember">Remember me</label>
+              </div>
+              <button type="submit" className="btn btn-auth">Sign In</button>
+              {error && <p id="error" className="error-message">{error}</p>}
+            </form>
+            <p className="auth-link">
+              Don’t have an account? <Link to="/sign-up">Sign Up</Link>
+            </p>
+          </div>
         </section>
       </div>
     </main>

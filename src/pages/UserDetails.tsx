@@ -97,9 +97,7 @@ const UserDetails: React.FC = () => {
               <div className="user-right">
                 <div className="details-columns">
                   <div className="block general">
-                    <h3 className="section-title">
-                      <img src={require("../assets/icons/user.svg")} alt="user" /> General Info
-                    </h3>
+                    <h3 className="section-title">General Info</h3>
                     <ul>
                       <li><strong>Department:</strong>
                         <span className="value">{edit ? <input value={form.department||""} onChange={e=>setForm({ ...form, department: e.target.value })} /> : (user.department ?? "-")}</span></li>
@@ -113,9 +111,7 @@ const UserDetails: React.FC = () => {
                   </div>
 
                   <div className="block contacts">
-                    <h3 className="section-title">
-                      <img src={require("../assets/icons/contacts.svg")} alt="contacts" /> Contacts
-                    </h3>
+                    <h3 className="section-title"> Contacts</h3>
                     <ul>
                       <li><strong>Mobile phone:</strong>
                         <span className="value">{edit ? <input value={form.phone||""} onChange={e=>setForm({ ...form, phone: e.target.value })} /> : (user.phone ?? "-")}</span></li>
@@ -127,9 +123,7 @@ const UserDetails: React.FC = () => {
                   </div>
 
                   <div className="block travel">
-                    <h3 className="section-title">
-                      <img src={require("../assets/icons/travel.svg")} alt="travel" /> Travel Info
-                    </h3>
+                    <h3 className="section-title">Travel Info</h3>
                     <ul>
                       <li><strong>Citizenship:</strong>
                         <span className="value">{edit ? <input value={form.citizenship || ""} onChange={e => setForm({ ...form, citizenship: e.target.value })} /> : (user.citizenship ?? "-")}

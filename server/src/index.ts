@@ -1,15 +1,51 @@
 import express from "express";
 import cors from "cors";
 import bcrypt from "bcryptjs";
-import { getAllUsers, getUserById, getUserAuthByEmail, updateUserFields, insertUser } from "./db";
-import { User } from "./server-types";
 import { randomUUID } from "crypto";
+import {
+  getAllUsers,
+  getUserById,
+  getUserAuthByEmail,
+  updateUserFields,
+  insertUser
+} from "./db";
+import { User } from "./server-types";
 
 const app = express();
 const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
+
+app.post("/api/sign-in", async (req, res) => {
+  const { email, password } = req.body || {};
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: "Missing credentials" });
+  }
+
+  const user = getUserAuthByEmail(email);
+  if (!user) {
+    return res.status(401).json({ success: false, message: "User not found" });
+  }
+
+  const match = await bcrypt.compare(password, user.password_hash);
+  if (!match) {
+    return res.status(401).json({ success: false, message: "Incorrect password" });
+  }
+
+  return res.json({
+    success: true,
+    user: {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      user_avatar: user.user_avatar
+    }
+  });
+});
 
 app.post("/api/sign-up", async (req, res) => {
   const { email, password } = req.body || {};
@@ -44,7 +80,7 @@ app.post("/api/sign-up", async (req, res) => {
     _id: randomUUID(),
     email,
     password_hash: hash,
-    role: "Employee", 
+    role: "Employee",
     user_avatar: "./assets/avatars/profile-avatar.webp",
     first_name: "",
     last_name: ""
@@ -57,7 +93,6 @@ app.post("/api/sign-up", async (req, res) => {
     user: { _id: newUser._id, role: newUser.role, email: newUser.email }
   });
 });
-
 
 app.get("/api/users", (_req, res) => {
   res.json(getAllUsers());
