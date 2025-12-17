@@ -9,7 +9,7 @@ import {
   updateUserFields,
   insertUser
 } from "./db";
-import { User } from "./server-types";
+import { User } from "@shared/types/User";
 
 const app = express();
 const PORT = 3001;
@@ -25,26 +25,26 @@ app.post("/api/sign-in", async (req, res) => {
   }
 
   const user = getUserAuthByEmail(email);
-  if (!user) {
-    return res.status(401).json({ success: false, message: "User not found" });
-  }
+if (!user) {
+  return res.status(401).json({ success: false, message: "User not found" });
+}
 
   const match = await bcrypt.compare(password, user.password_hash);
-  if (!match) {
-    return res.status(401).json({ success: false, message: "Incorrect password" });
-  }
+if (!match) {
+  return res.status(401).json({ success: false, message: "Incorrect password" });
+}
 
   return res.json({
-    success: true,
-    user: {
-      _id: user._id,
-      email: user.email,
-      role: user.role,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      user_avatar: user.user_avatar
-    }
-  });
+  success: true,
+  user: {
+    _id: user._id,
+    email: user.email,
+    role: user.role,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    user_avatar: user.user_avatar
+  }
+});
 });
 
 app.post("/api/sign-up", async (req, res) => {

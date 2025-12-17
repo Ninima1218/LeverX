@@ -11,7 +11,10 @@ module.exports = {
     clean: true
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"]
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    alias: {
+      "@shared": path.resolve(__dirname, "shared")
+    }
   },
   module: {
     rules: [
@@ -20,7 +23,6 @@ module.exports = {
         exclude: /node_modules/,
         use: "babel-loader"
       },
-
       {
         test: /\.s[ac]ss$/i,
         use: [
@@ -36,7 +38,6 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"]
       },
-
       {
         test: /\.(png|jpe?g|gif|webp|svg)$/i,
         type: "asset/resource",
@@ -44,7 +45,6 @@ module.exports = {
           filename: "assets/images/[name][ext]"
         }
       },
-
       {
         test: /\.(woff2?|eot|ttf|otf)$/i,
         type: "asset/resource",

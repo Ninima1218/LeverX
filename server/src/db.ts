@@ -1,6 +1,6 @@
 import path from "path";
 import Database from "better-sqlite3";
-import { User } from "./server-types";
+import { User } from "@shared/types/User";
 
 const dbPath = path.resolve(__dirname, "../data/addressbook.db");
 const db = new Database(dbPath);
@@ -112,10 +112,8 @@ export function getUserById(id: string): User | undefined {
   return db.prepare("SELECT * FROM users WHERE _id = ?").get(id) as User | undefined;
 }
 
-export function getUserAuthByEmail(email: string): { _id: string; role: string; password_hash: string } | undefined {
-  return db
-    .prepare("SELECT _id, role, password_hash FROM users WHERE email = ?")
-    .get(email) as { _id: string; role: string; password_hash: string } | undefined;
+export function getUserAuthByEmail(email: string): User | undefined {
+  return db.prepare("SELECT * FROM users WHERE email = ?").get(email) as User | undefined;
 }
 
 export function updateUserFields(id: string, fields: Partial<User>): void {

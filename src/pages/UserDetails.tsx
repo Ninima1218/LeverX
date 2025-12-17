@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { useAppSelector } from "../store";
 import { useGetUserByIdQuery, useUpdateUserMutation } from "../store/usersApi";
-import { User } from "../../server/src/server-types";
+import { User } from "@shared/types/User";
 
 const canEditByRole = (current: User | null, target: User | null) => {
   if (!current || !target) return false;

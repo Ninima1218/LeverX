@@ -36,6 +36,7 @@
     "webpack-dev-server": "4.15.1"
   },
   "scripts": {
+  "kill3000": "powershell taskkill /F /PID (Get-NetTCPConnection -LocalPort 3000).OwningProcess",
   "dev": "webpack serve --config webpack.config.js --mode development",
   "build": "webpack --config webpack.config.js --mode production",
   "preview": "webpack serve --config webpack.config.js --mode production",
