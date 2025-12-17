@@ -36,13 +36,9 @@
     "webpack-dev-server": "4.15.1"
   },
   "scripts": {
-  "kill3000": "powershell taskkill /F /PID (Get-NetTCPConnection -LocalPort 3000).OwningProcess",
-  "dev": "webpack serve --config webpack.config.js --mode development",
-  "build": "webpack --config webpack.config.js --mode production",
-  "preview": "webpack serve --config webpack.config.js --mode production",
-  "server": "ts-node server/src/index.ts",
-  "start": "node dist/index.js", 
-  "all": "concurrently \"npm run server\" \"npm run dev\""
-}
-
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "webpack --config webpack.config.js --mode production",
+    "build:server": "cd server && npm run build",
+    "start": "node server/dist/index.js"
+  }
 }

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "crypto";
+import path from "path";
 import {
   getAllUsers,
   getUserById,
@@ -12,7 +13,7 @@ import {
 import { User } from "@shared/types/User";
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -25,26 +26,26 @@ app.post("/api/sign-in", async (req, res) => {
   }
 
   const user = getUserAuthByEmail(email);
-if (!user) {
-  return res.status(401).json({ success: false, message: "User not found" });
-}
+  if (!user) {
+    return res.status(401).json({ success: false, message: "User not found" });
+  }
 
   const match = await bcrypt.compare(password, user.password_hash);
-if (!match) {
-  return res.status(401).json({ success: false, message: "Incorrect password" });
-}
+  if (!match) {
+    return res.status(401).json({ success: false, message: "Incorrect password" });
+  }
 
   return res.json({
-  success: true,
-  user: {
-    _id: user._id,
-    email: user.email,
-    role: user.role,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    user_avatar: user.user_avatar
-  }
-});
+    success: true,
+    user: {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      user_avatar: user.user_avatar
+    }
+  });
 });
 
 app.post("/api/sign-up", async (req, res) => {
@@ -112,6 +113,16 @@ app.patch("/api/users/:id", (req, res) => {
 
 app.get("/api/employees", (_req, res) => {
   res.json(getAllUsers());
+});
+
+app.get("/health", (_req, res) => {
+  res.json({ ok: true });
+});
+
+app.use(express.static(path.join(__dirname, "../../dist")));
+
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(__dirname, "../../dist/index.html"));
 });
 
 app.listen(PORT, () => {
