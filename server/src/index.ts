@@ -1,8 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import bcrypt from "bcryptjs";
 import { randomUUID } from "crypto";
 import path from "path";
+
 import {
   getAllUsers,
   getUserById,
@@ -18,7 +19,17 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/sign-in", async (req, res) => {
+interface SignInBody {
+  email?: string;
+  password?: string;
+}
+
+interface SignUpBody {
+  email?: string;
+  password?: string;
+}
+
+app.post("/api/sign-in", async (req: Request<unknown, unknown, SignInBody>, res: Response) => {
   const { email, password } = req.body || {};
 
   if (!email || !password) {
@@ -48,7 +59,7 @@ app.post("/api/sign-in", async (req, res) => {
   });
 });
 
-app.post("/api/sign-up", async (req, res) => {
+app.post("/api/sign-up", async (req: Request<unknown, unknown, SignUpBody>, res: Response) => {
   const { email, password } = req.body || {};
 
   if (!email || !password) {
@@ -59,7 +70,6 @@ app.post("/api/sign-up", async (req, res) => {
   if (!emailRegex.test(email)) {
     return res.status(400).json({ success: false, message: "Invalid email format" });
   }
-
   if (password.length < 6) {
     return res.status(400).json({ success: false, message: "Password must be at least 6 characters long" });
   }
@@ -95,33 +105,32 @@ app.post("/api/sign-up", async (req, res) => {
   });
 });
 
-app.get("/api/users", (_req, res) => {
+app.get("/api/users", (_req: Request, res: Response) => {
   res.json(getAllUsers());
 });
 
-app.get("/api/users/:id", (req, res) => {
+app.get("/api/users/:id", (req: Request<{ id: string }>, res: Response) => {
   const user = getUserById(String(req.params.id));
   if (!user) return res.status(404).json({ success: false, message: "Not found" });
   res.json(user);
 });
 
-app.patch("/api/users/:id", (req, res) => {
+app.patch("/api/users/:id", (req: Request<{ id: string }, unknown, Partial<User>>, res: Response) => {
   updateUserFields(String(req.params.id), req.body || {});
   const updated = getUserById(String(req.params.id));
   res.json({ success: true, user: updated });
 });
 
-app.get("/api/employees", (_req, res) => {
+app.get("/api/employees", (_req: Request, res: Response) => {
   res.json(getAllUsers());
 });
 
-app.get("/health", (_req, res) => {
+app.get("/health", (_req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
 app.use(express.static(path.join(__dirname, "../../dist")));
-
-app.get("*", (_req, res) => {
+app.get("*", (_req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../dist/index.html"));
 });
 
