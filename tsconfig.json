@@ -7,9 +7,10 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["../shared/*"]
-    }
+      "@shared/*": ["./shared/*"]
+    },
+    "skipLibCheck": true
   },
-  "include": ["src", "../shared"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "shared"],
+  "exclude": ["node_modules", "dist", "server"]
 }

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { insertUser } from "./db";
-import { Role, User } from "@shared/types/User";
+import { User, Role } from "../../shared/types/User";
 
 const usersJsonPath = path.resolve(process.cwd(), "users.json");
 console.log("Loading:", usersJsonPath);

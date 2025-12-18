@@ -21,7 +21,16 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: "babel-loader"
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              ["@babel/preset-env", { targets: "defaults" }],
+              "@babel/preset-react",
+              "@babel/preset-typescript"
+            ]
+          }
+        }
       },
       {
         test: /\.s[ac]ss$/i,
@@ -61,16 +70,5 @@ module.exports = {
       inject: "body"
     })
   ],
-  devServer: {
-    port: 3000,
-    open: true,
-    historyApiFallback: true,
-    proxy: {
-      "/api": "http://localhost:3001"
-    },
-    client: {
-      overlay: true
-    }
-  },
   devtool: "source-map"
 };
