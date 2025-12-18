@@ -7,12 +7,12 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./", 
+    "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["../shared/*"]
     }
   },
-  "include": ["src", "shared"],
+  "include": ["src", "../shared"],
   "exclude": ["node_modules", "dist"]
 }
