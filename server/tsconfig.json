@@ -7,8 +7,12 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
 
-    "rootDir": "..",
     "outDir": "./dist",
+  
+    "baseUrl": "..", 
+    "paths": {
+      "@shared/*": ["shared/*"]
+    },
 
     "types": ["node"],
     "typeRoots": [
@@ -22,9 +26,6 @@
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "../src",
-    "../public",
-    "../dist"
+    "dist"
   ]
 }

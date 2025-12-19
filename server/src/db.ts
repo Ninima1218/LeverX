@@ -2,47 +2,47 @@ import path from "path";
 import Database from "better-sqlite3";
 import { User } from "../../shared/types/User";
 
-const dbPath = path.resolve(__dirname, "../data/addressbook.db");
+const dbPath = path.join(process.cwd(), "server", "data", "addressbook.db");
 const db = new Database(dbPath);
 db.pragma("journal_mode = WAL");
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
-  _id TEXT PRIMARY KEY,
-  email TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  role TEXT NOT NULL DEFAULT 'Employee',
+    _id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'Employee',
 
-  isRemoteWork INTEGER,
-  user_avatar TEXT,
+    isRemoteWork INTEGER,
+    user_avatar TEXT,
 
-  first_name TEXT,
-  middle_name TEXT,
-  last_name TEXT,
+    first_name TEXT,
+    middle_name TEXT,
+    last_name TEXT,
 
-  first_native_name TEXT,
-  middle_native_name TEXT,
-  last_native_name TEXT,
+    first_native_name TEXT,
+    middle_native_name TEXT,
+    last_native_name TEXT,
 
-  department TEXT,
-  building TEXT,
-  room TEXT,
-  desk_number TEXT,
+    department TEXT,
+    building TEXT,
+    room TEXT,
+    desk_number TEXT,
 
-  date_birth_year INTEGER,
-  date_birth_month INTEGER,
-  date_birth_day INTEGER,
+    date_birth_year INTEGER,
+    date_birth_month INTEGER,
+    date_birth_day INTEGER,
 
-  manager_id TEXT,
-  manager_inner_id TEXT,
-  manager_first_name TEXT,
-  manager_last_name TEXT,
+    manager_id TEXT,
+    manager_inner_id TEXT,
+    manager_first_name TEXT,
+    manager_last_name TEXT,
 
-  phone TEXT,
-  telegram TEXT,
-  cnumber TEXT,
-  citizenship TEXT
-);
+    phone TEXT,
+    telegram TEXT,
+    cnumber TEXT,
+    citizenship TEXT
+  );
 `);
 
 export function insertUser(u: User) {
@@ -73,31 +73,24 @@ export function insertUser(u: User) {
     u.email,
     u.password_hash,
     u.role,
-
     u.isRemoteWork ? 1 : 0,
     u.user_avatar || null,
-
     u.first_name || null,
     u.middle_name || null,
     u.last_name || null,
-
     u.first_native_name || null,
     u.middle_native_name || null,
     u.last_native_name || null,
-
     u.department || null,
     u.building || null,
     u.room || null,
     String(u.desk_number ?? ""),
-
     u.date_birth?.year ?? null,
     u.date_birth?.month ?? null,
     u.date_birth?.day ?? null,
-
     u.manager_id ?? null,
     u.manager?.first_name ?? null,
     u.manager?.last_name ?? null,
-
     u.phone || null,
     u.telegram || null,
     u.cnumber || null,
@@ -106,15 +99,44 @@ export function insertUser(u: User) {
 }
 
 export function getAllUsers(): User[] {
-  return db.prepare("SELECT * FROM users").all() as User[];
+  const rows = db.prepare("SELECT * FROM users").all() as any[];
+  return rows.map(row => ({
+    ...row,
+    isRemoteWork: Boolean(row.isRemoteWork),
+    date_birth: {
+      year: row.date_birth_year,
+      month: row.date_birth_month,
+      day: row.date_birth_day
+    }
+  })) as User[];
 }
 
 export function getUserById(id: string): User | undefined {
-  return db.prepare("SELECT * FROM users WHERE _id = ?").get(id) as User | undefined;
+  const row = db.prepare("SELECT * FROM users WHERE _id = ?").get(id) as any;
+  if (!row) return undefined;
+  return {
+    ...row,
+    isRemoteWork: Boolean(row.isRemoteWork),
+    date_birth: {
+      year: row.date_birth_year,
+      month: row.date_birth_month,
+      day: row.date_birth_day
+    }
+  } as User;
 }
 
 export function getUserAuthByEmail(email: string): User | undefined {
-  return db.prepare("SELECT * FROM users WHERE email = ?").get(email) as User | undefined;
+  const row = db.prepare("SELECT * FROM users WHERE email = ?").get(email) as any;
+  if (!row) return undefined;
+  return {
+    ...row,
+    isRemoteWork: Boolean(row.isRemoteWork),
+    date_birth: {
+      year: row.date_birth_year,
+      month: row.date_birth_month,
+      day: row.date_birth_day
+    }
+  } as User;
 }
 
 export function updateUserFields(id: string, fields: Partial<User>): void {
@@ -140,23 +162,28 @@ export function updateUserFields(id: string, fields: Partial<User>): void {
     cnumber: "cnumber",
     citizenship: "citizenship"
   };
-   const params: Record<string, any> = { id };
+
+  const params: Record<string, any> = { id };
   const sets: string[] = [];
 
- for (const [key, value] of Object.entries(fields)) {
-  if (key === "date_birth" && value) {
-    const birth = value as User["date_birth"];
-    params["date_birth_year"] = birth?.year ?? null;
-    params["date_birth_month"] = birth?.month ?? null;
-    params["date_birth_day"] = birth?.day ?? null;
-    continue;
-  }
+  for (const [key, value] of Object.entries(fields)) {
+    if (key === "date_birth" && value) {
+      const birth = value as User["date_birth"];
+      params["date_birth_year"] = birth?.year ?? null;
+      params["date_birth_month"] = birth?.month ?? null;
+      params["date_birth_day"] = birth?.day ?? null;
+      sets.push("date_birth_year = @date_birth_year");
+      sets.push("date_birth_month = @date_birth_month");
+      sets.push("date_birth_day = @date_birth_day");
+      continue;
+    }
 
-  const col = map[key];
-  if (!col) continue;
-  sets.push(`${col} = @${col}`);
-  params[col] = value as any;
-}
+    const col = map[key];
+    if (!col) continue;
+
+    sets.push(`${col} = @${col}`);
+    params[col] = key === "isRemoteWork" ? (value ? 1 : 0) : value;
+  }
 
   if (!sets.length) return;
   const stmt = db.prepare(`UPDATE users SET ${sets.join(", ")} WHERE _id = @id`);

@@ -1,16 +1,16 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "module": "esnext",
-    "target": "es2019",
-    "strict": true,
-    "esModuleInterop": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["./shared/*"]
+      "@shared/*": ["shared/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src", "shared"],
-  "exclude": ["node_modules", "dist", "server"]
+  "include": ["src/**/*", "shared/**/*"]
 }

@@ -160,9 +160,17 @@ app.get("/health", (_req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-app.use(express.static(path.join(__dirname, "../../dist")));
+// app.use(express.static(path.join(__dirname, "../../dist")));
+// app.get("*", (_req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, "../../dist/index.html"));
+// });
+
+const rootDistPath = path.join(process.cwd(), "dist");
+
+app.use(express.static(rootDistPath));
+
 app.get("*", (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../../dist/index.html"));
+  res.sendFile(path.join(rootDistPath, "index.html"));
 });
 
 app.listen(PORT, () => {

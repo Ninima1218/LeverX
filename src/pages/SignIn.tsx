@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch } from "../store";
 import { setAuth } from "../store/authSlice";
-import { User } from "../../server/src/server-types";
-
-type SignInResp = {
-  success: boolean;
-  message?: string;
-  user?: User;
-};
+import { useLoginMutation } from "../store/usersApi"; 
 
 const SignIn: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,32 +20,24 @@ const SignIn: React.FC = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3001/api/sign-in", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password })
-      });
-
-      const data: SignInResp = await res.json();
-
-      if (!res.ok || !data.success || !data.user?._id) {
-        setError(data.message || "Sign-in failed");
-        return;
-      }
+      const response = await login({ 
+        email: email.trim(), 
+        password 
+      }).unwrap();
 
       if (remember) {
-        localStorage.setItem("userId", String(data.user._id));
+        localStorage.setItem("userId", String(response.user._id));
       }
 
       dispatch(setAuth({
-        userId: String(data.user._id),
-        role: data.user.role,
-        user: data.user
+        userId: String(response.user._id),
+        role: response.user.role,
+        user: response.user
       }));
 
       navigate("/home", { replace: true });
-    } catch {
-      setError("Server unavailable");
+    } catch (err: any) {
+      setError(err?.data?.message || "Server unavailable");
     }
   };
 
@@ -65,6 +53,7 @@ const SignIn: React.FC = () => {
                 <input
                   id="email"
                   type="email"
+                  autoComplete="username"
                   className="text-input"
                   placeholder="john.smith@leverx.com"
                   required
@@ -94,7 +83,13 @@ const SignIn: React.FC = () => {
                 />
                 <label htmlFor="remember">Remember me</label>
               </div>
-              <button type="submit" className="btn btn-auth">Sign In</button>
+              <button 
+                type="submit" 
+                className="btn btn-auth" 
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
+              </button>
               {error && <p id="error" className="error-message">{error}</p>}
             </form>
             <p className="auth-link">

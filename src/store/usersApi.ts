@@ -3,13 +3,15 @@ import { User } from "@shared/types/User";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3001/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
   tagTypes: ["Users", "User"],
   endpoints: (builder) => ({
     getUsers: builder.query<User[], void>({
       query: () => "/users",
       providesTags: (result) =>
-        result ? [...result.map(u => ({ type: "User" as const, id: u._id })), { type: "Users", id: "LIST" }] : [{ type: "Users", id: "LIST" }]
+        result 
+          ? [...result.map(u => ({ type: "User" as const, id: u._id })), { type: "Users", id: "LIST" }] 
+          : [{ type: "Users", id: "LIST" }]
     }),
     getUserById: builder.query<User, string>({
       query: (id) => `/users/${id}`,
@@ -22,8 +24,28 @@ export const usersApi = createApi({
         body: data
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "User", id }, { type: "Users", id: "LIST" }]
-    })
+    }),
+    login: builder.mutation<any, any>({
+      query: (credentials) => ({
+        url: "/sign-in",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    register: builder.mutation<any, any>({
+      query: (userData) => ({
+        url: "/sign-up",
+        method: "POST",
+        body: userData,
+      }),
+    }),
   })
 });
 
-export const { useGetUsersQuery, useGetUserByIdQuery, useUpdateUserMutation } = usersApi;
+export const { 
+  useGetUsersQuery, 
+  useGetUserByIdQuery, 
+  useUpdateUserMutation,
+  useLoginMutation,
+  useRegisterMutation 
+} = usersApi;
