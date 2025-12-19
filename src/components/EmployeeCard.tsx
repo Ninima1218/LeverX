@@ -11,9 +11,7 @@ type EmployeeCardProps = {
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ name, department, room, avatar }) => {
 
-  const avatarSrc = avatar
-    ? `/assets/avatars/${avatar}`
-    : "/assets/avatars/profile-avatar.webp";
+  const avatarSrc = avatar ? avatar : "/assets/avatars/profile-avatar.webp";
 
   return (
     <div className="employee-card">

@@ -91,9 +91,7 @@ const Header: React.FC = () => {
         <div className="user-info">
           <img
             className="user-avatar"
-            src={auth.user?.user_avatar
-              ? `/assets/avatars/${auth.user.user_avatar}`
-              : "/assets/avatars/profile-avatar.webp"}
+            src={auth.user?.user_avatar || "/assets/avatars/profile-avatar.webp"}
             alt="avatar"
           />
           <span className="user-name">

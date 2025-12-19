@@ -29,34 +29,28 @@ function normalizeManager(u: any): { manager_id: string | null; manager: User["m
 
 for (const u of users) {
   const { manager_id, manager } = normalizeManager(u);
-
+  const avatarFileName = u.user_avatar ? path.basename(u.user_avatar) : "profile-avatar.webp";
   insertUser({
     _id: String(u._id),
     email: String(u.email || `${(u.first_name || "").toLowerCase()}.${(u.last_name || "").toLowerCase()}@leverx.com`),
     password_hash: PASSWORD_HASH,
     role: assignRole(String(u._id)),
-
     isRemoteWork: Boolean(u.isRemoteWork),
-    user_avatar: u.user_avatar || "./assets/avatars/profile-avatar.webp",
+    user_avatar: avatarFileName, 
 
     first_name: u.first_name || "",
     middle_name: u.middle_name || u.middle_native_name || "",
     last_name: u.last_name || "",
-
     first_native_name: u.first_native_name || "",
     middle_native_name: u.middle_native_name || "",
     last_native_name: u.last_native_name || "",
-
     department: u.department || "",
     building: u.building || "",
     room: u.room || "",
     desk_number: u.desk_number ?? "",
-
     date_birth: u.date_birth || undefined,
-
     manager_id,
     manager,
-
     phone: u.phone || "",
     telegram: u.telegram || "",
     cnumber: u.cnumber || "",
