@@ -25,6 +25,13 @@ export const usersApi = createApi({
       }),
       invalidatesTags: (_result, _error, { id }) => [{ type: "User", id }, { type: "Users", id: "LIST" }]
     }),
+    deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, id) => [{ type: "User", id }, { type: "Users", id: "LIST" }]
+    }),
     login: builder.mutation<any, any>({
       query: (credentials) => ({
         url: "/sign-in",
@@ -46,6 +53,7 @@ export const {
   useGetUsersQuery, 
   useGetUserByIdQuery, 
   useUpdateUserMutation,
+  useDeleteUserMutation, // Теперь этот хук доступен для Settings
   useLoginMutation,
   useRegisterMutation 
 } = usersApi;

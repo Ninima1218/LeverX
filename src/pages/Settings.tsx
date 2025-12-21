@@ -1,136 +1,163 @@
 import React, { useMemo, useState } from "react";
 import Header from "../components/Header";
+import SearchPanel from "../components/SearchPanel";
 import { useAppSelector } from "../store";
-import { useGetUsersQuery, useGetUserByIdQuery, useUpdateUserMutation } from "../store/usersApi";
-import { User, Role } from "../../server/src/server-types";
+import { 
+  useGetUsersQuery, 
+  useGetUserByIdQuery, 
+  useUpdateUserMutation, 
+  useDeleteUserMutation 
+} from "../store/usersApi";
+import { User, Role } from "../../shared/types/User";
 
 const canEdit = (current: User, target: User) => {
-  if (current.role === "Admin") return String(current._id) !== String(target._id);
+  if (String(current._id) === String(target._id)) return false;
+  if (current.role === "Admin") return true;
   if (current.role === "HR") {
     const managerId = target.manager?.id ?? target.manager_id;
-    return String(current._id) !== String(target._id) && String(managerId) === String(current._id);
+    return String(managerId) === String(current._id);
   }
   return false;
 };
 
 const Settings: React.FC = () => {
   const auth = useAppSelector(state => state.auth);
-
-  const { data: users = [], isLoading, error } = useGetUsersQuery();
-
+  const filter = useAppSelector(state => state.filter);
+  
+  const { data: users = [], isLoading } = useGetUsersQuery();
   const { data: current } = useGetUserByIdQuery(auth.userId!, { skip: !auth.userId });
-
+  
   const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
-  const [term, setTerm] = useState("");
   const [editing, setEditing] = useState<User | null>(null);
   const [form, setForm] = useState<Partial<User>>({});
 
   const filtered = useMemo(() => {
-    const t = term.toLowerCase();
-    return users.filter(u =>
-      (u.first_name ?? "").toLowerCase().includes(t) ||
-      (u.last_name ?? "").toLowerCase().includes(t) ||
-      (u.email ?? "").toLowerCase().includes(t)
-    );
-  }, [term, users]);
+    return users.filter(u => {
+      const fullName = `${u.first_name} ${u.last_name}`.toLowerCase();
+      const searchName = (filter.name || "").toLowerCase();
+      if (searchName && !fullName.includes(searchName)) return false;
 
-  const startEdit = (u: User) => {
-    if (!current || !canEdit(current, u)) return;
-    setEditing(u);
-    setForm({
-      first_name: u.first_name,
-      last_name: u.last_name,
-      first_native_name: u.first_native_name,
-      last_native_name: u.last_native_name,
-      middle_native_name: u.middle_native_name,
-      email: u.email,
-      phone: u.phone,
-      telegram: u.telegram,
-      citizenship: u.citizenship,
-      role: u.role
+      return Object.entries(filter).every(([key, value]) => {
+        if (!value || key === "name") return true;
+        const userValue = (u as any)[key];
+        return String(userValue).toLowerCase().includes(String(value).toLowerCase());
+      });
     });
+  }, [filter, users]);
+
+  const handleDelete = async (id: string, name: string) => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      try {
+        await deleteUser(id).unwrap();
+      } catch (err) {
+        console.error("Delete failed:", err);
+      }
+    }
   };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editing) return;
-    await updateUser({ id: editing._id, data: form });
+    await updateUser({ id: editing._id, data: form }).unwrap();
     setEditing(null);
   };
 
-  if (isLoading) return <p>Loading users...</p>;
-  if (error) return <p>Error loading users</p>;
+  if (isLoading) return <div className="loader">Loading...</div>;
 
   return (
-    <>
-      <Header />
-      <main className="main-content">
-        <div className="content-wrapper">
-          <h2>Roles & Permissions</h2>
-          <input
-            id="search"
-            placeholder="Search"
-            value={term}
-            onChange={e => setTerm(e.target.value)}
-          />
-          <table id="roles-table">
-            <thead>
-              <tr>
-                <th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(u => (
-                <tr key={u._id}>
-                  <td>{u.first_name} {u.last_name}</td>
-                  <td>{u.email ?? ""}</td>
-                  <td>{u.role}</td>
-                  <td>
-                    {current && canEdit(current, u) && (
-                      <button className="edit-btn" onClick={() => startEdit(u)}>Edit</button>
-                    )}
-                  </td>
+    <div className="page-container">
+    <Header />
+    <main className="main-content">
+      <div className="content-wrapper">
+        <SearchPanel />
+
+        <div className="settings-main-section"> 
+          <div className="table-controls">
+            <h2 className="table-title">Roles & Permissions <span>({filtered.length})</span></h2>
+          </div>
+
+          <div className="table-container">
+            <table className="employees-table">
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th className="text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map(u => (
+                  <tr key={u._id} className="table-row">
+                    <td>
+                      <div className="user-cell">
+                        <img src={u.user_avatar || "/default-avatar.png"} className="table-avatar" alt=""/>
+                        <span className="user-name">{u.first_name} {u.last_name}</span>
+                      </div>
+                    </td>
+                    <td>{u.email}</td>
+                    <td><span className={`dept-tag role-${u.role?.toLowerCase()}`}>{u.role}</span></td>
+                    <td className="text-right">
+                      {current && canEdit(current, u) && (
+                        <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
+                          <button 
+                            className="view-profile-btn" 
+                            onClick={() => { setEditing(u); setForm({ ...u }); }}
+                          >
+                            Edit
+                          </button>
+                          
+                          {current.role === "Admin" && (
+                            <button 
+                            className="clear-btn" 
+                            onClick={() => handleDelete(u._id, `${u.first_name} ${u.last_name}`)}
+                          >
+                            Delete
+                          </button>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {editing && (
-            <div id="edit-modal">
-              <form id="edit-form" onSubmit={submit}>
-                <input
-                  name="first_name"
-                  value={form.first_name || ""}
-                  onChange={e => setForm({ ...form, first_name: e.target.value })}
-                />
-                <input
-                  name="last_name"
-                  value={form.last_name || ""}
-                  onChange={e => setForm({ ...form, last_name: e.target.value })}
-                />
-                <input
-                  name="email"
-                  value={form.email || ""}
-                  onChange={e => setForm({ ...form, email: e.target.value })}
-                />
-                <select
-                  name="role"
-                  value={form.role || "Employee"}
-                  onChange={e => setForm({ ...form, role: e.target.value as Role })}
-                >
-                  <option>Admin</option>
-                  <option>HR</option>
-                  <option>Employee</option>
-                </select>
-                <button type="submit">Save</button>
-                <button type="button" id="cancel-edit" onClick={() => setEditing(null)}>Cancel</button>
-              </form>
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h3>Edit Permissions</h3>
+                  <button className="close-modal" onClick={() => setEditing(null)}>&times;</button>
+                </div>
+                <form className="modal-form" onSubmit={submit}>
+                  <div className="field-group">
+                    <label>Role</label>
+                    <select 
+                       className="search-input"
+                       value={form.role} 
+                       onChange={e => setForm({...form, role: e.target.value as Role})}
+                    >
+                      <option value="Admin">Admin</option>
+                      <option value="HR">HR</option>
+                      <option value="Employee">Employee</option>
+                    </select>
+                  </div>
+                  <div className="form-actions" style={{ marginTop: "20px" }}>
+                    <button type="button" className="clear-btn" onClick={() => setEditing(null)}>Cancel</button>
+                    <button type="submit" className="search-btn">Save</button>
+                  </div>
+                </form>
+              </div>
             </div>
           )}
-        </div>
+          </div>
+          </div>
       </main>
-    </>
+    </div>
   );
 };
 

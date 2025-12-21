@@ -25,10 +25,6 @@ const SignIn: React.FC = () => {
         password 
       }).unwrap();
 
-      if (remember) {
-        localStorage.setItem("userId", String(response.user._id));
-      }
-
       dispatch(setAuth({
         userId: String(response.user._id),
         role: response.user.role,

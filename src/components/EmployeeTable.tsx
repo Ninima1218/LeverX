@@ -1,88 +1,81 @@
 import React, { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import { useGetUsersQuery } from "../store/usersApi";
 import { useAppSelector } from "../store";
-import { User } from "../../server/src/server-types";
-
-const canEdit = (current: User, target: User) => {
-  if (current.role === "Admin") return String(current._id) !== String(target._id);
-  if (current.role === "HR") {
-    const managerId = target.manager?.id ?? target.manager_id;
-    return String(current._id) !== String(target._id) && String(managerId) === String(current._id);
-  }
-  return false;
-};
+import { User } from "@shared/types/User";
 
 const EmployeeTable: React.FC = () => {
+  const navigate = useNavigate();
   const auth = useAppSelector(s => s.auth);
   const { data: users = [], isLoading, error } = useGetUsersQuery();
   const filter = useAppSelector(s => s.filter);
-  const [term, setTerm] = useState("");
 
   const filtered = useMemo(() => {
-    const t = term.trim().toLowerCase();
-    const byForm = (u: User) =>
-      Object.entries(filter).every(([key, val]) => {
-        if (!val) return true;
-        const field = (u as any)[key];
-        return field && String(field).toLowerCase().includes(String(val).toLowerCase());
-      });
-    return users
-      .filter(u => byForm(u))
-      .filter(u => {
-        if (!t) return true;
-        const full = `${u.first_name ?? ""} ${u.last_name ?? ""}`.toLowerCase();
-        return full.includes(t) || (u.email ?? "").toLowerCase().includes(t);
-      });
-  }, [users, filter, term]);
+    return users.filter(u => {
+        return Object.entries(filter).every(([key, val]) => {
+            if (!val) return true;
 
-  if (isLoading) return <p>Loading employees...</p>;
-  if (error) return <p>Error loading users</p>;
+            if (key === 'name') {
+                const full = `${u.first_name ?? ""} ${u.last_name ?? ""}`.toLowerCase();
+                return full.includes(String(val).toLowerCase());
+            }
+
+            const field = (u as any)[key];
+            return field && String(field).toLowerCase().includes(String(val).toLowerCase());
+        });
+    });
+}, [users, filter]);
+
+  if (isLoading) return <div className="loading">Loading employees...</div>;
+  if (error) return <div className="error">Error loading users</div>;
 
   return (
     <section className="address-book">
-      <div className="table-header">
-        <h2>Address Book</h2>
-        <input
-          className="search-input"
-          placeholder="Search employees"
-          value={term}
-          onChange={e => setTerm(e.target.value)}
-        />
+      <div className="table-controls">
+        <h2 className="table-title">Employees <span>({filtered.length})</span></h2>
       </div>
-      <table className="employees-table">
-        <thead>
-          <tr>
-            <th>Avatar</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Building</th>
-            <th>Room</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(u => {
-            const avatarSrc = u.user_avatar
-              ? `/assets/avatars/${u.user_avatar}`
-              : "/assets/avatars/profile-avatar.webp";
-            const can = auth.user && canEdit(auth.user, u);
-            return (
-              <tr key={u._id}>
-                <td><img src={avatarSrc} alt="avatar" className="table-avatar" /></td>
-                <td>{u.first_name} {u.last_name}</td>
-                <td>{u.email ?? ""}</td>
-                <td>{u.department ?? ""}</td>
-                <td>{u.building ?? ""}</td>
-                <td>{u.room ?? ""}</td>
-                <td>
-                  {can ? <a className="edit-link" href={`/users/${u._id}`}>Edit</a> : ""}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+
+      <div className="table-container">
+        <table className="employees-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Email</th>
+              <th>Department</th>
+              <th>Location</th>
+              <th className="text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(u => {
+              const avatarSrc = u.user_avatar
+                ? `/assets/avatars/${u.user_avatar}`
+                : "/assets/avatars/profile-avatar.webp";
+
+              return (
+                <tr key={u._id} onClick={() => navigate(`/user/${u._id}`)} className="table-row">
+                  <td className="user-cell">
+                    <img src={avatarSrc} alt="" className="table-avatar" />
+                    <div className="user-info">
+                      <span className="user-name">{u.first_name} {u.last_name}</span>
+                    </div>
+                  </td>
+                  <td className="email-cell">{u.email}</td>
+                  <td><span className="dept-tag">{u.department || "No Dept"}</span></td>
+                  <td className="location-cell">
+                    {u.building && `${u.building}, Room ${u.room}`}
+                  </td>
+                  <td className="text-right">
+                    <Link to={`/user/${u._id}`} className="view-profile-btn" onClick={(e) => e.stopPropagation()}>
+                      View Profile
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 };

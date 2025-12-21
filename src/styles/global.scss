@@ -34,15 +34,35 @@ body {
 }
 
 .main-content {
-    padding: 70px 40px 0 40px;
+    padding-top: 5rem;
+    padding-inline: 4%;
     background: var(--background-color);
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 
 .content-wrapper {
     display: flex;
-    gap: 40px;
-}
+    flex-direction: row; 
+    gap: 2rem;
+    width: 100%;
+    max-width: 1600px;
+    align-items: flex-start;
+
+    .search-filter-section {
+            flex: 0 0 350px; 
+            position: sticky;
+            top: 6rem; 
+            min-width: 350px;
+        }
+   
+    &>*:not(.search-filter-section) {
+        flex: 1;
+        min-width: 0; 
+        width: 100%;
+    }
+    }
 
 .card {
     background: var(--card-color);
@@ -93,9 +113,20 @@ body {
     }
 }
 
+@media (max-width: 1024px) {
+    .content-wrapper {
+        flex-direction: column;
+
+        .search-filter-section {
+            flex: none;
+            width: 100%;
+            position: static;
+        }
+    }
+}
+
 @import "./header";
 @import "./employee";
 @import "./search";
-@import "./profile";
 @import "./user-details";
 @import "./auth";

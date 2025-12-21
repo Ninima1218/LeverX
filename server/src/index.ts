@@ -19,16 +19,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-/** * КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: 
- * Мы используем __dirname (путь к текущему файлу), чтобы точно найти папку public.
- * Из server/src мы выходим на 2 уровня вверх в корень HW1.
- */
-const PUBLIC_DIR = path.join(__dirname, "../../public");
+const ROOT_DIR = process.cwd();
+const PUBLIC_DIR = path.join(ROOT_DIR, "public");
+const DIST_PATH = path.join(ROOT_DIR, "dist");
 
-// Сначала раздаем аватарки. Если файл есть — сервер его отдаст и НЕ пойдет дальше.
+app.use(express.static(path.join(PUBLIC_DIR, "assets/avatars")));
+
 app.use("/assets", express.static(path.join(PUBLIC_DIR, "assets")));
-
-// --- API Роуты ---
 
 app.post("/api/sign-in", async (req: Request, res: Response) => {
   const { email, password } = req.body || {};
@@ -71,22 +68,17 @@ app.patch("/api/users/:id", (req, res) => {
   res.json({ success: true, user: getUserById(req.params.id) });
 });
 
-// --- Работа с фронтендом ---
-
-// Путь к собранному фронтенду (dist)
-const DIST_PATH = path.join(__dirname, "../../dist");
 app.use(express.static(DIST_PATH));
 
-// Любой запрос, который не API и не картинка — отдаем фронтенд
 app.get("*", (req, res) => {
-  // Если это запрос к ассетам, но мы сюда попали — значит файла нет. 404 вместо редиректа.
-  if (req.url.startsWith("/assets")) {
-    return res.status(404).send("File not found");
+  if (req.url.startsWith("/api") || req.url.startsWith("/assets")) {
+    return res.status(404).send("Not found");
   }
   res.sendFile(path.join(DIST_PATH, "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`\n✅ Server is running on http://localhost:${PORT}`);
-  console.log(`📂 Serving assets from: ${path.join(PUBLIC_DIR, "assets")}`);
+  console.log(`\n Server is running on http://localhost:${PORT}`);
+  console.log(`ROOT: ${ROOT_DIR}`);
+  console.log(`Assets: ${path.join(PUBLIC_DIR, "assets")}`);
 });

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, Role } from "../../server/src/server-types";
+import { User, Role } from "../../shared/types/User";
 
 type AuthState = {
   userId: string | null;
@@ -7,10 +7,13 @@ type AuthState = {
   user: User | null;
 };
 
+const savedUser = localStorage.getItem("user");
+const parsedUser: User | null = savedUser ? JSON.parse(savedUser) : null;
+
 const initialState: AuthState = {
-  userId: null,
-  role: null,
-  user: null,
+  userId: parsedUser ? String(parsedUser._id) : null,
+  role: parsedUser ? parsedUser.role : null,
+  user: parsedUser,
 };
 
 type SetAuthPayload = {
@@ -27,11 +30,15 @@ const authSlice = createSlice({
       state.userId = action.payload.userId;
       state.role = action.payload.role;
       state.user = action.payload.user;
+
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
     },
     clearAuth: (state) => {
       state.userId = null;
       state.role = null;
       state.user = null;
+
+      localStorage.removeItem("user");
     },
   },
 });
