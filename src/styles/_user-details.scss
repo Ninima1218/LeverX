@@ -61,86 +61,104 @@
             margin-bottom: 20px;
         }
 
-           .profile-actions {
-               display: flex;
-               flex-direction: column;
-               gap: 12px;
-               width: 140px;
-               margin-top: 20px; 
-    
-               .copy-link-btn,
-               .edit-btn {
-                   width: 100%; 
-                   height: 36px;
-                   border-radius: 20px;
-                   font-size: 13px;
-                   font-weight: 500;
-                   display: flex;
-                   align-items: center;
-                   justify-content: center;
-                   gap: 8px;
-                   cursor: pointer;
-                   transition: all 0.2s ease;
-               }
-    
-               .edit-btn {
-                   background: #ffffff;
-                   color: #5c85cc;
-                   border: 1px solid #5c85cc; 
-                   text-transform: uppercase;
-                   letter-spacing: 0.5px;
-    
-                   .edit-icon {
-                       width: 14px;
-                       height: 14px;
-                       filter: invert(53%) sepia(13%) saturate(2135%) hue-rotate(185deg) brightness(92%) contrast(88%);
-                   }
-    
-                   &:hover {
-                       background: rgba(92, 133, 204, 0.05);
-                       border-color: #4a6fa5;
-                       color: #4a6fa5;
-                   }
-               }
-    
-               .edit-controls {
-                   display: flex;
-                   flex-direction: column;
-                   gap: 8px;
-                   width: 100%;
-    
-                   .save-btn,
-                   .cancel-btn {
-                       width: 100%;
-                       height: 36px;
-                       border-radius: 20px; 
-                       border: none;
-                       font-size: 13px;
-                       font-weight: 600;
-                       text-transform: uppercase;
-                       cursor: pointer;
-                   }
-    
-                   .save-btn {
-                       background: #5c85cc;
-                       color: white;
-    
-                       &:hover {
-                           background: #4a6fa5;
-                       }
-                   }
-    
-                   .cancel-btn {
-                       background: #f0f0f0;
-                       color: #666;
-    
-                       &:hover {
-                           background: #e0e0e0;
-                       }
-                   }
-               }
-           }
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 140px;
+            margin-top: 20px;
+
+            .copy-link-btn,
+            .edit-btn {
+                width: 100%;
+                height: 36px;
+                border-radius: 20px;
+                font-size: 13px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border: none;
+            }
+
+            .copy-link-btn {
+                background: #f0f0f0;
+                color: #666666;
+
+                .copy-icon {
+                    width: 16px;
+                    height: 16px;
+                    object-fit: contain;
+                    filter: grayscale(1) opacity(0.6) !important;
+                }
+
+                &:hover {
+                    background: #e5e5e5;
+                    color: #333333;
+                }
+            }
+
+            .edit-btn {
+                background: #ffffff;
+                color: #5c85cc;
+                border: 1px solid #5c85cc;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+
+                .edit-icon {
+                    width: 14px;
+                    height: 14px;
+                    filter: invert(53%) sepia(13%) saturate(2135%) hue-rotate(185deg) brightness(92%) contrast(88%);
+                }
+
+                &:hover {
+                    background: rgba(92, 133, 204, 0.05);
+                    border-color: #4a6fa5;
+                    color: #4a6fa5;
+                }
+            }
+
+            .edit-controls {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+
+                .save-btn,
+                .cancel-btn {
+                    width: 100%;
+                    height: 36px;
+                    border-radius: 20px;
+                    border: none;
+                    font-size: 13px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    cursor: pointer;
+                }
+
+                .save-btn {
+                    background: #5c85cc;
+                    color: white;
+
+                    &:hover {
+                        background: #4a6fa5;
+                    }
+                }
+
+                .cancel-btn {
+                    background: #f0f0f0;
+                    color: #666;
+
+                    &:hover {
+                        background: #e0e0e0;
+                    }
+                }
+            }
         }
+    }
 
     .vertical-divider {
         width: 1px;
@@ -165,7 +183,7 @@
                 padding: 0;
 
                 li {
-                    display: grid; 
+                    display: grid;
                     grid-template-columns: 30px 180px 1fr;
                     padding: 8px 0;
                     align-items: center;
@@ -210,61 +228,55 @@
 
 @media (max-width: 1024px) {
     .user-details {
-            padding: 20px 15px;
-        }
-    .user-layout {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+        padding: 20px 15px;
 
-    .vertical-divider {
-        display: none; 
-    }
-
-    .user-left {
-        align-items: center;
-        text-align: center;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 30px;
-
-        .back-btn {
-            top: -10px;
-            left: 0;
+        .user-layout {
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
 
-        .profile-actions {
-            width: 100%;
-            max-width: 280px; 
-            flex-direction: row; 
-            justify-content: center;
+        .vertical-divider {
+            display: none;
         }
-    }
-}
 
-@media (max-width: 768px) {
-    .user-right {
-        .block {
-            ul li {
-                grid-template-columns: 30px 120px 1fr;
-                gap: 10px;
+        .user-left {
+            align-items: center;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 30px;
+
+            .back-btn {
+                top: -10px;
+                left: 0;
+            }
+
+            .profile-actions {
+                width: 100%;
+                max-width: 280px;
+                flex-direction: row;
+                justify-content: center;
             }
         }
     }
 }
 
+@media (max-width: 768px) {
+    .user-details .user-right .block ul li {
+        grid-template-columns: 30px 120px 1fr;
+        gap: 10px;
+    }
+}
+
 @media (max-width: 480px) {
-    .user-left {
-        .profile-actions {
+    .user-details {
+        .user-left .profile-actions {
             flex-direction: column;
             align-items: center;
         }
-    }
 
-    .user-right {
-        .block {
+        .user-right .block {
             .section-title {
                 text-align: center;
-                margin-bottom: 15px;
             }
 
             ul li {
@@ -284,7 +296,7 @@
 
                 .value {
                     width: 100%;
-                    padding-left: 28px; 
+                    padding-left: 28px;
                     margin-top: 4px;
                     word-break: break-all;
 
