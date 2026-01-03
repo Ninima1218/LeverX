@@ -49,14 +49,14 @@ const Header: React.FC = () => {
       {open && <div className="menu-overlay" onClick={close} />}
 
       <header className="header">
-        <Link to="/home" className="header__left company-link">
+        <Link to="/" className="header__left company-link">
           <h3>LEVERX</h3>
           <h1>EMPLOYEE SERVICES</h1>
         </Link>
 
         <div className="header__center">
           <nav className="address-book-title">
-            <NavLink to="/address-book" className="address-link">Address Book</NavLink>
+            <NavLink to="/" className="address-link">Address Book</NavLink>
             {auth.role === "Admin" && (
               <NavLink className="settings-link" to="/settings">Settings</NavLink>
             )}
@@ -74,7 +74,13 @@ const Header: React.FC = () => {
               <Link to={profilePath} className="user-info">
                 <img
                   className="user-avatar"
-                  src={auth.user.user_avatar || "/assets/avatars/profile-avatar.webp"}
+                  src={
+                    !auth.user.user_avatar
+                      ? "/assets/avatars/profile-avatar.webp"
+                      : auth.user.user_avatar.startsWith("/assets/avatars/")
+                      ? auth.user.user_avatar
+                      : `/assets/avatars/${auth.user.user_avatar.replace(/^\/assets\/avatars\//, "")}`
+                  }
                   alt="avatar"
                 />
                 <span className="user-name">
@@ -108,7 +114,13 @@ const Header: React.FC = () => {
           <Link to={profilePath} className="user-profile" onClick={close}>
             <img
               className="user-avatar"
-              src={auth.user.user_avatar || "/assets/avatars/profile-avatar.webp"}
+              src={
+                !auth.user.user_avatar
+                  ? "/assets/avatars/profile-avatar.webp"
+                  : auth.user.user_avatar.startsWith("/assets/avatars/")
+                  ? auth.user.user_avatar
+                  : `/assets/avatars/${auth.user.user_avatar.replace(/^\/assets\/avatars\//, "")}`
+              }
               alt="avatar"
             />
             <div className="user-info-text">
@@ -120,7 +132,7 @@ const Header: React.FC = () => {
         )}
 
         <div className="mobile-nav">
-          <NavLink className="nav-link" to="/address-book" onClick={close}>
+          <NavLink className="nav-link" to="/" onClick={close}>
             Address Book
           </NavLink>
 

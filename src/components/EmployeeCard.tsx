@@ -13,7 +13,17 @@ type EmployeeCardProps = {
 };
 
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ id, name, department, room, avatar, view = "grid" }) => {
-  const avatarSrc = avatar ? avatar : "/assets/avatars/profile-avatar.webp";
+  // Fix avatar path - handle both full paths and filenames
+  let avatarSrc = "/assets/avatars/profile-avatar.webp";
+  if (avatar) {
+    if (avatar.startsWith("/assets/avatars/")) {
+      avatarSrc = avatar;
+    } else if (avatar.startsWith("avatar") || avatar.endsWith(".webp")) {
+      avatarSrc = `/assets/avatars/${avatar}`;
+    } else {
+      avatarSrc = avatar;
+    }
+  }
 
   return (
     <Link to={`/users/${id}`} className={`employee-card ${view}-view`}>

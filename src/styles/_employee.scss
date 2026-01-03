@@ -9,12 +9,13 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 14px;
-        align-items: center;
+        align-items: flex-start;
 
         .employee-count {
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 13px;
+            font-weight: 700;
             color: var(--text-color);
+            padding-top: 2px;
         }
 
         .view-toggle {
@@ -32,8 +33,8 @@
                 cursor: pointer;
 
                 img {
-                    width: 18px;
-                    height: 18px;
+                    width: 20px;
+                    height: 20px;
                     filter: grayscale(100%) opacity(0.2);
                     transition: 0.2s;
                 }
@@ -51,10 +52,13 @@
         top: 70px;
         z-index: 10;
         grid-template-columns: $list-columns;
-        padding: 10px 20px;
+        padding: 12px 20px;
         margin-bottom: 10px;
+        background: var(--card-color);
+        border-radius: 16px;
+        box-shadow: 0 1px 8px rgba(22, 50, 80, 0.08);
         color: var(--muted-text-color);
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -251,6 +255,177 @@
 
 .settings-main-section {
     padding: 20px 0;
+
+    .table-controls {
+        .table-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .settings-add-btn {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }
+
+    .add-user-form-container {
+        .settings-form {
+            .field-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                label {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: var(--text-color);
+                }
+
+                .search-input {
+                    width: 100%;
+                    padding: 10px 14px;
+                    font-size: 14px;
+                    border: 1px solid var(--border-color);
+                    border-radius: 6px;
+                    box-sizing: border-box;
+                    background: var(--secondary-background-color);
+                    color: var(--text-color);
+                    transition: border-color 0.2s;
+
+                    &:focus {
+                        outline: none;
+                        border-color: var(--primary-color);
+                    }
+                }
+            }
+
+            .form-actions {
+                .settings-cancel-btn {
+                    background: var(--secondary-background-color);
+                    color: var(--text-color);
+                    border: 1px solid var(--border-color);
+                    border-radius: 6px;
+                    padding: 10px 20px;
+                    font-size: 13px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.2s;
+
+                    &:hover {
+                        background: var(--border-color);
+                    }
+                }
+
+                .settings-save-btn {
+                    background: var(--primary-color);
+                    color: #fff;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 10px 20px;
+                    font-size: 13px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: opacity 0.2s;
+
+                    &:hover:not(:disabled) {
+                        opacity: 0.9;
+                    }
+
+                    &:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+    }
+
+    .edit-form-row {
+        td {
+            .settings-form {
+                .field-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+                    label {
+                        font-size: 13px;
+                        font-weight: 700;
+                        color: var(--text-color);
+                    }
+
+                    .search-input {
+                        width: 100%;
+                        padding: 10px 14px;
+                        font-size: 14px;
+                        border: 1px solid var(--border-color);
+                        border-radius: 6px;
+                        box-sizing: border-box;
+                        background: var(--secondary-background-color);
+                        color: var(--text-color);
+                        transition: border-color 0.2s;
+
+                        &:focus {
+                            outline: none;
+                            border-color: var(--primary-color);
+                        }
+                    }
+                }
+
+                .form-actions {
+                    .settings-cancel-btn {
+                        background: var(--secondary-background-color);
+                        color: var(--text-color);
+                        border: 1px solid var(--border-color);
+                        border-radius: 6px;
+                        padding: 10px 20px;
+                        font-size: 13px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.2s;
+
+                        &:hover {
+                            background: var(--border-color);
+                        }
+                    }
+
+                    .settings-save-btn {
+                        background: var(--primary-color);
+                        color: #fff;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 10px 20px;
+                        font-size: 13px;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: opacity 0.2s;
+
+                        &:hover:not(:disabled) {
+                            opacity: 0.9;
+                        }
+
+                        &:disabled {
+                            opacity: 0.5;
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     .table-container {
         background: #fff;

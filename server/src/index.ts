@@ -15,15 +15,12 @@ import { User } from "../../shared/types/User";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-app.use(cors());
-app.use(express.json());
-
 const ROOT_DIR = process.cwd();
 const PUBLIC_DIR = path.join(ROOT_DIR, "public");
 const DIST_PATH = path.join(ROOT_DIR, "dist");
 
-app.use(express.static(path.join(PUBLIC_DIR, "assets/avatars")));
+app.use(cors());
+app.use(express.json());
 
 app.use("/assets", express.static(path.join(PUBLIC_DIR, "assets")));
 
@@ -61,6 +58,36 @@ app.get("/api/users", (_req, res) => res.json(getAllUsers()));
 app.get("/api/users/:id", (req, res) => {
   const user = getUserById(req.params.id);
   user ? res.json(user) : res.status(404).json({ message: "Not found" });
+});
+
+app.post("/api/users", async (req: Request, res: Response) => {
+  const userData = req.body;
+  if (!userData.email) {
+    return res.status(400).json({ success: false, message: "Email is required" });
+  }
+  
+  const hash = await bcrypt.hash("test123", 10); // Default password for new users
+  const newUser: User = {
+    _id: randomUUID(),
+    email: userData.email,
+    password_hash: hash,
+    role: userData.role || "Employee",
+    user_avatar: userData.user_avatar || "/assets/avatars/profile-avatar.webp",
+    first_name: userData.first_name || "",
+    last_name: userData.last_name || "",
+    department: userData.department,
+    building: userData.building,
+    room: userData.room,
+    desk_number: userData.desk_number,
+    phone: userData.phone,
+    telegram: userData.telegram,
+    cnumber: userData.cnumber,
+    citizenship: userData.citizenship,
+    manager_id: userData.manager_id || null
+  };
+  
+  insertUser(newUser);
+  res.json({ success: true, user: getUserById(newUser._id) });
 });
 
 app.patch("/api/users/:id", (req, res) => {

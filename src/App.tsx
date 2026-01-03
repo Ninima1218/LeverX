@@ -14,19 +14,24 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   return userId ? children : <Navigate to="/sign-in" replace />;
 };
 
+const GuestRoute = ({ children }: { children: JSX.Element }) => {
+  const userId = useAppSelector(state => state.auth.userId);
+  return userId ? <Navigate to="/" replace /> : children;
+};
+
 const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const role = useAppSelector(state => state.auth.role);
-  return role === "Admin" ? children : <Navigate to="/home" replace />;
+  return role === "Admin" ? children : <Navigate to="/" replace />;
 };
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/sign-in" element={<GuestRoute><SignIn /></GuestRoute>} />
+      <Route path="/sign-up" element={<GuestRoute><SignUp /></GuestRoute>} />
 
-      <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-
+      <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path="/home" element={<Navigate to="/" replace />} />
       <Route path="/address-book" element={<PrivateRoute><AddressBook /></PrivateRoute>} />
 
       <Route path="/users/:id" element={<PrivateRoute><UserDetails /></PrivateRoute>} />

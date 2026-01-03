@@ -23,6 +23,7 @@
     }
 
     &__left {
+        display: flex;
         justify-content: center;
         flex-direction: column;
         align-items: flex-start;
@@ -91,15 +92,20 @@
     }
 
     &__right {
+        display: flex;
         justify-content: flex-end;
+        align-items: center;
         gap: 12px;
         flex-shrink: 0;
 
         .user-wrapper {
                 display: flex;
+                flex-direction: row;
                 align-items: center;
                 gap: 12px;
                 height: 100%;
+                margin: 0; 
+                padding: 0;
             }
             
         .support-btn,
@@ -139,6 +145,8 @@
 
         .user-info {
             padding-left: 6px;
+            display: flex;
+            align-items: center;
 
             .user-avatar {
                 width: 28px;
@@ -159,6 +167,8 @@
         .signout-btn {
             width: 38px;
             padding: 0;
+            display: flex;
+            align-items: center;
         }
     }
 }

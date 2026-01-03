@@ -46,6 +46,14 @@ export const usersApi = createApi({
         body: userData,
       }),
     }),
+    createUser: builder.mutation<User, Partial<User>>({
+      query: (userData) => ({
+        url: "/users",
+        method: "POST",
+        body: userData,
+      }),
+      invalidatesTags: [{ type: "Users", id: "LIST" }]
+    }),
   })
 });
 
@@ -53,7 +61,8 @@ export const {
   useGetUsersQuery, 
   useGetUserByIdQuery, 
   useUpdateUserMutation,
-  useDeleteUserMutation, // Теперь этот хук доступен для Settings
+  useDeleteUserMutation, 
   useLoginMutation,
-  useRegisterMutation 
+  useRegisterMutation,
+  useCreateUserMutation
 } = usersApi;

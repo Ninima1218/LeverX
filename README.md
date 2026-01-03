@@ -21,6 +21,19 @@ npm run preview
 
 ```
 
+## 🔐 Testing Credentials
+
+**Admin Account:**
+
+- Email: `hermione.granger@leverx.com`
+- Password: `test123`
+
+**All Other Users:**
+
+- Password: `test123`
+
+---
+
 📂 Project Structure
 src/
 ├── components/ # UI components (Header, EmployeeCard, SearchPanel)
@@ -31,13 +44,13 @@ src/
 └── App.tsx # Main routing
 
 🛠️ Routes
-/home — Home page
+/ — Address Book (default page, merged with Home)
 
 /address-book — Employee address book
 
 /settings — Settings (Admin only)
 
-/user/:id — User profile page
+/users/:id — User profile page
 
 - — 404 Page Not Found
 
@@ -86,11 +99,11 @@ All styles are written in SCSS:
 Uses CSS variables (var(--primary-color), var(--card-color), var(--text-color), etc.) for theming support.
 
 🔐 Access Control
-Admin: can edit all employee profiles.
+Admin: Full access. Can edit any user, delete users, and change roles (except their own role).
 
-HR: can edit profiles of employees they manage.
+HR: Can ONLY edit users where user.manager_id === currentUser.\_id.
 
-User: can only view their own profile.
+Employee: Read-only access everywhere.
 
 📦 API
 usersApi.ts — RTK Query endpoints:

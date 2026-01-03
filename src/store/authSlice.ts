@@ -7,7 +7,7 @@ type AuthState = {
   user: User | null;
 };
 
-const savedUser = localStorage.getItem("user");
+const savedUser = sessionStorage.getItem("user");
 const parsedUser: User | null = savedUser ? JSON.parse(savedUser) : null;
 
 const initialState: AuthState = {
@@ -31,14 +31,14 @@ const authSlice = createSlice({
       state.role = action.payload.role;
       state.user = action.payload.user;
 
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      sessionStorage.setItem("user", JSON.stringify(action.payload.user));
     },
     clearAuth: (state) => {
       state.userId = null;
       state.role = null;
       state.user = null;
 
-      localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
     },
   },
 });

@@ -42,18 +42,24 @@ const EmployeeTable: React.FC = () => {
               <th>Employee</th>
               <th>Email</th>
               <th>Department</th>
-              <th>Location</th>
-              <th className="text-right">Action</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map(u => {
-              const avatarSrc = u.user_avatar
-                ? `/assets/avatars/${u.user_avatar}`
-                : "/assets/avatars/profile-avatar.webp";
+              // Fix avatar path - handle both full paths and filenames
+              let avatarSrc = "/assets/avatars/profile-avatar.webp";
+              if (u.user_avatar) {
+                if (u.user_avatar.startsWith("/assets/avatars/")) {
+                  avatarSrc = u.user_avatar;
+                } else if (u.user_avatar.startsWith("avatar") || u.user_avatar.endsWith(".webp")) {
+                  avatarSrc = `/assets/avatars/${u.user_avatar}`;
+                } else {
+                  avatarSrc = u.user_avatar;
+                }
+              }
 
               return (
-                <tr key={u._id} onClick={() => navigate(`/user/${u._id}`)} className="table-row">
+                <tr key={u._id} onClick={() => navigate(`/users/${u._id}`)} className="table-row">
                   <td className="user-cell">
                     <img src={avatarSrc} alt="" className="table-avatar" />
                     <div className="user-info">
@@ -62,14 +68,6 @@ const EmployeeTable: React.FC = () => {
                   </td>
                   <td className="email-cell">{u.email}</td>
                   <td><span className="dept-tag">{u.department || "No Dept"}</span></td>
-                  <td className="location-cell">
-                    {u.building && `${u.building}, Room ${u.room}`}
-                  </td>
-                  <td className="text-right">
-                    <Link to={`/user/${u._id}`} className="view-profile-btn" onClick={(e) => e.stopPropagation()}>
-                      View Profile
-                    </Link>
-                  </td>
                 </tr>
               );
             })}

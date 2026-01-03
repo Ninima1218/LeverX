@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "main": "server/dist/index.js",
   "scripts": {
-  "build": "npm run build:client && npm run build:server",
-  "build:client": "webpack --mode production", 
-  "build:server": "tsc -p server/tsconfig.json",
-  "start": "node server/dist/server/src/index.js"
-},
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "webpack serve --mode development",
+    "dev:server": "ts-node --project server/tsconfig.json server/src/index.ts",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "webpack --mode production",
+    "build:server": "tsc -p server/tsconfig.json",
+    "start": "node server/dist/server/src/index.js"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "babel-loader": "9.1.3",

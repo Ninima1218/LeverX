@@ -10,6 +10,22 @@ module.exports = {
     publicPath: "/",
     clean: true
   },
+  devServer: {
+  static: {
+    directory: path.join(__dirname, "public"), 
+  },
+  historyApiFallback: true,
+  port: 3001,
+  hot: true, 
+  proxy: {
+    '/api': 'http://localhost:3000',
+    '/assets': 'http://localhost:3000',
+    '^/avatar': {
+      target: 'http://localhost:3000',
+      pathRewrite: { '^/avatar': '/assets/avatars' }
+    }
+  },
+},
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
     alias: {

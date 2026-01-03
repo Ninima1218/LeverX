@@ -31,7 +31,7 @@ const SignIn: React.FC = () => {
         user: response.user
       }));
 
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     } catch (err: any) {
       setError(err?.data?.message || "Server unavailable");
     }

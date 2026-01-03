@@ -10,9 +10,9 @@ const canEditByRole = (current: User | null, target: User | null) => {
   if (current.role === "Admin") return true;
   if (current.role === "HR") {
     const mgrId = target.manager?.id ?? target.manager_id;
-    return String(mgrId) === String(current._id) || current._id === target._id;
+    return String(mgrId) === String(current._id);
   }
-  return current._id === target._id;
+  return false;
 };
 
 const formatDateBirth = (date: any) => {
@@ -82,12 +82,33 @@ const UserDetails: React.FC = () => {
                 </button>
 
                 <img src={avatarSrc} alt={user.first_name} className="profile-avatar" />
-                <h2 className="full-name">{user.first_name} {user.last_name}</h2>
-                <p className="secondary-name">{user.last_name} {user.first_name[0]}.</p>
+                <h2 className="full-name">
+                  {edit && canEdit ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <input 
+                        type="text" 
+                        value={form.first_name || ""} 
+                        onChange={e => setForm({ ...form, first_name: e.target.value })} 
+                        placeholder="First Name"
+                        style={{ padding: "4px 8px", fontSize: "24px", border: "1px solid #ddd", borderRadius: "4px" }}
+                      />
+                      <input 
+                        type="text" 
+                        value={form.last_name || ""} 
+                        onChange={e => setForm({ ...form, last_name: e.target.value })} 
+                        placeholder="Last Name"
+                        style={{ padding: "4px 8px", fontSize: "24px", border: "1px solid #ddd", borderRadius: "4px" }}
+                      />
+                    </div>
+                  ) : (
+                    `${user.first_name} ${user.last_name}`
+                  )}
+                </h2>
+                <p className="secondary-name">{user.last_name} {user.first_name?.[0]}.</p>
 
                 <div className="profile-actions">
                   <button className={`copy-link-btn ${copied ? 'copied' : ''}`} onClick={handleCopyLink}>
-                    <img src={require("../assets/icons/copy.svg")} alt="copy" />
+                    <img src={require("../assets/icons/copy.svg")} alt="copy" className="copy-icon" />
                     {copied ? "Copied!" : "Copy link"}
                   </button>
 
@@ -161,7 +182,18 @@ const UserDetails: React.FC = () => {
                       <li>
                         <img src={require("../assets/icons/email.svg")} alt="" />
                         <strong>Email</strong>
-                        <span className="value" style={{ color: '#5c85cc' }}>{edit ? <input value={form.email || ""} onChange={e => setForm({ ...form, email: e.target.value })} /> : (user.email ?? "-")}</span>
+                        <span className="value" style={{ color: '#5c85cc' }}>
+                          {edit && canEdit ? (
+                            <input 
+                              type="email" 
+                              value={form.email || ""} 
+                              onChange={e => setForm({ ...form, email: e.target.value })} 
+                              style={{ padding: "4px 8px", border: "1px solid #ddd", borderRadius: "4px", width: "200px" }}
+                            />
+                          ) : (
+                            user.email ?? "-"
+                          )}
+                        </span>
                       </li>
                       <li>
                         <img src={require("../assets/icons/telegram.svg")} alt="" />
